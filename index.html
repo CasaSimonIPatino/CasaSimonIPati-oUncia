@@ -4,12 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Palacio de Sim&oacute;n I. Pati&ntilde;o - Unc&iacute;a (1899-1905)</title>
-  <meta name="description" content="Explora en 3D el exterior del Palacio de Sim&oacute;n I. Pati&ntilde;o en Unc&iacute;a, Potos&iacute;. Recorrido por la entrada, la torre escocesa, la Planta Di&eacute;sel Miraflores y vista general." />
+  <meta name="description" content="Explora en 3D el exterior del Palacio de Sim&oacute;n I. Pati&ntilde;o y la Planta Di&eacute;sel de 1901 en Unc&iacute;a, Potos&iacute;, con narrador de voz e inspecci&oacute;n por estaciones." />
 
   <!-- Tipografias Clasicas de Epoca -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,500;0,700;1,400&display=swap" rel="stylesheet">
+
+  <!-- Visor 3D para la vitrina del apartado Planta Diesel -->
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"></script>
 
   <!-- Importmap de Three.js r160 -->
   <script type="importmap">
@@ -178,13 +181,13 @@
     .nav-links {
       list-style: none;
       display: flex; align-items: center;
-      gap: clamp(14px, 2.2vw, 28px);
+      gap: clamp(12px, 2vw, 24px);
     }
     .nav-links a {
       font-family: var(--font-label);
       font-variant: small-caps;
-      font-size: 0.74rem;
-      letter-spacing: 0.15em;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
       color: var(--text-sepia);
       padding-bottom: 4px;
       border-bottom: 1px solid transparent;
@@ -296,8 +299,8 @@
     .hero-left-banner {
       position: absolute;
       left: clamp(26px, 4.5vw, 60px);
-      bottom: 112px;
-      max-width: 450px;
+      bottom: 120px;
+      max-width: 460px;
       z-index: 14;
       pointer-events: none;
       background: linear-gradient(90deg, rgba(18, 13, 8, 0.88) 0%, rgba(18, 13, 8, 0.55) 85%, transparent 100%);
@@ -346,9 +349,9 @@
     /* Placa de Bronce de Estacion Activa */
     .tour-plaque-card {
       position: absolute;
-      bottom: 112px;
+      bottom: 120px;
       left: clamp(26px, 4.5vw, 60px);
-      width: min(470px, 90vw);
+      width: min(480px, 92vw);
       background: var(--surface-plaque);
       border: 4px double var(--gold-vintage);
       padding: 20px 24px;
@@ -373,18 +376,30 @@
       margin-bottom: 8px;
       font-family: var(--font-label);
       font-variant: small-caps;
-      font-size: 0.68rem;
-      letter-spacing: 0.16em;
+      font-size: 0.66rem;
+      letter-spacing: 0.15em;
       color: var(--gold-vintage);
+      gap: 8px;
+    }
+    .plaque-header-actions {
+      display: flex;
+      gap: 6px;
+      align-items: center;
     }
     .plaque-close {
-      background: none;
-      border: 1px solid rgba(197, 160, 89, 0.4);
+      background: rgba(38, 28, 20, 0.9);
+      border: 1px solid rgba(197, 160, 89, 0.45);
       color: var(--gold-bright);
       cursor: pointer;
       font-family: var(--font-label);
-      font-size: 0.65rem;
-      padding: 2px 7px;
+      font-variant: small-caps;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      padding: 3px 8px;
+    }
+    .plaque-close:hover {
+      background: var(--gold-vintage);
+      color: #120D08;
     }
     .tour-plaque-card h3 {
       font-family: var(--font-monumental);
@@ -406,7 +421,7 @@
       flex-wrap: wrap;
     }
 
-    /* Sellos Dorados 3D proyectados a 2D (Puntos 1, 2, 3, 4) */
+    /* Sellos Dorados 3D proyectados a 2D */
     #hotspots-layer {
       position: absolute;
       inset: 0;
@@ -459,7 +474,7 @@
     }
     .seal-hotspot:hover .seal-tooltip { opacity: 1; }
 
-    /* Barra Inferior de Estaciones y Atmosfera 3D */
+    /* Barra Inferior de Escenarios, Estaciones, Narrador y Atmosfera 3D */
     .vintage-compass-dock {
       position: absolute;
       bottom: 20px;
@@ -468,10 +483,10 @@
       z-index: 30;
       background: rgba(18, 13, 8, 0.93);
       border: var(--border-double);
-      padding: 9px 16px;
+      padding: 9px 14px;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       flex-wrap: wrap;
       justify-content: center;
       width: max-content;
@@ -492,8 +507,8 @@
     .dock-label {
       font-family: var(--font-label);
       font-variant: small-caps;
-      font-size: 0.65rem;
-      letter-spacing: 0.14em;
+      font-size: 0.64rem;
+      letter-spacing: 0.13em;
       color: var(--text-muted);
       margin-right: 2px;
     }
@@ -503,9 +518,9 @@
       color: var(--text-sepia);
       font-family: var(--font-label);
       font-variant: small-caps;
-      font-size: 0.65rem;
-      letter-spacing: 0.11em;
-      padding: 7px 11px;
+      font-size: 0.64rem;
+      letter-spacing: 0.1em;
+      padding: 7px 10px;
       cursor: pointer;
       transition: all 0.2s ease;
     }
@@ -516,7 +531,7 @@
       color: var(--gold-bright);
     }
 
-    /* Panel Editor de Angulos y Puntos (Tecla P) */
+    /* Panel Editor de Angulos y Modelos (Tecla P) */
     .editor-toggle-btn {
       position: absolute;
       top: 88px;
@@ -623,7 +638,7 @@
     }
     .section-ornament-header {
       text-align: center;
-      max-width: 720px;
+      max-width: 760px;
       margin: 0 auto 60px;
     }
     .section-ornament-header .eyebrow {
@@ -659,6 +674,106 @@
     .ornament-divider::before, .ornament-divider::after {
       content: ""; width: 80px; height: 1px;
       background: linear-gradient(90deg, transparent, var(--gold-vintage), transparent);
+    }
+
+    /* Apartado Planta Diesel 1901 */
+    .diesel-showcase-box {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 36px;
+      align-items: center;
+      background: linear-gradient(155deg, rgba(38, 28, 20, 0.92) 0%, rgba(16, 11, 7, 0.98) 100%);
+      border: 4px double var(--gold-vintage);
+      padding: clamp(24px, 4vw, 44px);
+      box-shadow: 0 28px 75px rgba(0, 0, 0, 0.85);
+    }
+
+    .diesel-stage {
+      position: relative;
+      border: var(--border-double);
+      background:
+        radial-gradient(circle at 50% 45%, rgba(223, 192, 122, 0.25) 0%, rgba(38, 28, 20, 0.5) 50%, #090604 90%);
+      overflow: hidden;
+    }
+
+    .diesel-badge {
+      position: absolute;
+      top: 14px; left: 14px;
+      z-index: 4;
+      background: rgba(18, 13, 8, 0.92);
+      border: 1px solid var(--gold-vintage);
+      padding: 5px 12px;
+      font-family: var(--font-label);
+      font-variant: small-caps;
+      font-size: 0.66rem;
+      letter-spacing: 0.16em;
+      color: var(--gold-bright);
+      pointer-events: none;
+    }
+
+    .diesel-stage model-viewer {
+      width: 100%;
+      height: 440px;
+      background: transparent;
+      --poster-color: transparent;
+    }
+
+    .diesel-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 12px;
+      background: rgba(12, 8, 5, 0.95);
+      border-top: 1px solid rgba(197, 160, 89, 0.3);
+      justify-content: center;
+    }
+
+    .diesel-info .kicker-tag {
+      font-family: var(--font-label);
+      font-variant: small-caps;
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      color: var(--gold-vintage);
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .diesel-info h3 {
+      font-family: var(--font-monumental);
+      font-size: clamp(1.55rem, 2.8vw, 2.2rem);
+      color: var(--text-ivory);
+      margin-bottom: 16px;
+      line-height: 1.18;
+    }
+
+    .diesel-info p {
+      font-size: 1.16rem;
+      color: var(--text-sepia);
+      line-height: 1.68;
+      margin-bottom: 16px;
+    }
+
+    .diesel-ledger {
+      margin: 22px 0;
+      padding: 14px 0;
+      border-top: 1px solid rgba(197, 160, 89, 0.28);
+      border-bottom: 1px solid rgba(197, 160, 89, 0.28);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      font-family: var(--font-label);
+      font-variant: small-caps;
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+    }
+
+    .diesel-ledger strong {
+      display: block;
+      color: var(--gold-bright);
+      margin-bottom: 3px;
+      font-size: 0.74rem;
     }
 
     /* Comparador Before/After */
@@ -829,6 +944,7 @@
 
     @media (max-width: 980px) {
       .nav-links { display: none; }
+      .diesel-showcase-box { grid-template-columns: 1fr; }
       .brass-span-6 { grid-column: span 12; }
       .timeline-spine { left: 16px; }
       .chronicle-entry, .chronicle-entry:nth-child(even) {
@@ -871,7 +987,7 @@
     <div class="preloader-track">
       <div class="preloader-fill" id="preloader-fill"></div>
     </div>
-    <p class="preloader-status" id="preloader-status">Cargando arquitectura 3D (casa-exterior.glb)...</p>
+    <p class="preloader-status" id="preloader-status">Cargando arquitectura 3D...</p>
   </div>
 
   <!-- NAVEGACION SUPERIOR -->
@@ -882,27 +998,27 @@
     </a>
 
     <ul class="nav-links">
-      <li><a href="#visor-exterior" class="active">Exterior 3D</a></li>
+      <li><a href="#visor-exterior" class="active">Escenarios 3D</a></li>
+      <li><a href="#apartado-planta-diesel">Planta Di&eacute;sel 3D</a></li>
       <li><a href="#plano-comparador">Plano y Restauraci&oacute;n</a></li>
       <li><a href="#detalles-arquitectura">Arquitectura</a></li>
-      <li><a href="#cronica-historica">Cr&oacute;nica (1892-1952)</a></li>
-      <li><a href="./historia.html">Colecci&oacute;n 3D (.GLB)</a></li>
+      <li><a href="#cronica-historica">Cr&oacute;nica</a></li>
+      <li><a href="./historia.html">Colecci&oacute;n 3D</a></li>
     </ul>
 
     <div class="nav-actions">
-      <a href="./interior.html" class="btn-vintage btn-sm">Entrar a los 73 Ambientes</a>
+      <a href="./interior.html" class="btn-vintage btn-sm">Recorrido 3D</a>
     </div>
   </nav>
 
   <!-- ============================================================
-       HERO 3D DEL EXTERIOR (THREE.JS + CASA-EXTERIOR.GLB)
+       HERO 3D MULTIESCENARIO CON VISTAS POR ESTACIONES Y NARRADOR IA
        ============================================================ -->
   <section class="hero-stage-3d" id="visor-exterior">
 
     <div id="exterior-canvas-container"></div>
     <div id="hotspots-layer"></div>
 
-    <!-- Marco Ornamental Perimetral -->
     <div class="stage-ornamental-frame">
       <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
       <svg class="corner-filigree cf-tr"><use href="#filigree-corner"/></svg>
@@ -911,19 +1027,19 @@
     </div>
 
     <div class="free-roam-hint">
-      Arrastra para girar - Rueda para acercar - WASD / Flechas / Q / E para moverte libremente - Toca los sellos 1 al 4
+      Arrastra para girar - Rueda para acercar - WASD / Flechas / Q / E para moverte libremente - Toca los puntos 1 al 4
     </div>
 
-    <!-- BOTON Y PANEL EDITOR DE ANGULOS Y PUNTOS (SIN EMOJIS) -->
+    <!-- BOTON Y PANEL EDITOR DE ANGULOS Y MODELOS (TECLA P) -->
     <button type="button" class="editor-toggle-btn" id="btn-toggle-editor">
-      Configurar &Aacute;ngulos y Puntos (P)
+      Configurar &Aacute;ngulos y Modelos (P)
     </button>
 
     <div class="editor-drawer" id="editor-drawer" hidden>
       <div class="editor-section-title" style="margin-top:0;">1. Editar Punto de Estaci&oacute;n (1 al 4) y &Aacute;ngulo</div>
 
       <label style="display:block; margin-bottom:6px;">
-        <span>Seleccionar Punto:</span>
+        <span>Seleccionar Punto del Escenario Actual:</span>
         <select id="ed-select-stop"></select>
       </label>
 
@@ -962,7 +1078,7 @@
         </label>
       </div>
 
-      <div class="editor-section-title">2. Vista de Inicio Fija</div>
+      <div class="editor-section-title">2. Vista de Inicio del Escenario</div>
       <div style="display:flex; gap:6px; margin-bottom:8px;">
         <button type="button" class="dock-btn" id="ed-btn-save-home" style="flex:1;">
           Fijar Vista Actual como Inicio
@@ -972,13 +1088,13 @@
         </button>
       </div>
 
-      <div class="editor-section-title">3. Colocar Modelos .GLB en el Exterior</div>
+      <div class="editor-section-title">3. Colocar Modelos .GLB Adicionales</div>
       <label style="display:block; margin-bottom:6px;">
         <select id="ed-select-prop"></select>
       </label>
       <label style="display:flex; align-items:center; gap:8px; margin-bottom:6px; cursor:pointer;">
         <input type="checkbox" id="ed-chk-prop" style="accent-color:var(--gold-vintage);">
-        <span>Mostrar este modelo en el exterior</span>
+        <span>Mostrar este modelo en el escenario</span>
       </label>
       <button type="button" class="dock-btn" id="ed-btn-click-prop" style="width:100%; margin-bottom:8px; border-style:dashed;">
         Ubicar modelo con clic en el mapa
@@ -990,7 +1106,7 @@
         </label>
         <label>
           <span>Tama&ntilde;o (<strong id="ed-lbl-pscale">2.5m</strong>):</span>
-          <input type="range" id="ed-rng-pscale" min="0.5" max="10" step="0.1" value="2.5">
+          <input type="range" id="ed-rng-pscale" min="0.5" max="12" step="0.1" value="2.5">
         </label>
       </div>
 
@@ -1002,56 +1118,76 @@
 
     <!-- PRESENTACION IZQUIERDA EN VISTA DE INICIO -->
     <div class="hero-left-banner" id="hero-left-banner">
-      <span class="eyebrow">Unc&iacute;a - Potos&iacute;, Bolivia (1899 - 1905)</span>
-      <h1>La Casa de Sim&oacute;n I. Pati&ntilde;o</h1>
-      <p>
-        La primera residencia que el Rey del Esta&ntilde;o levant&oacute; en el pueblo donde comenz&oacute; su fortuna. Rec&oacute;rrela libremente o explora sus 4 estaciones patrimoniales.
+      <span class="eyebrow" id="hero-eyebrow">Unc&iacute;a - Potos&iacute;, Bolivia (1899 - 1905)</span>
+      <h1 id="hero-title">La Casa de Sim&oacute;n I. Pati&ntilde;o</h1>
+      <p id="hero-desc">
+        La primera residencia que el Rey del Esta&ntilde;o levant&oacute; en el pueblo donde comenz&oacute; su fortuna. Rec&oacute;rrela por estaciones con narraci&oacute;n por voz o explora el escenario de la Planta Di&eacute;sel de 1901.
       </p>
       <div class="hero-left-actions">
         <button type="button" class="btn-vintage btn-vintage-gold btn-sm" id="btn-start-tour">
           Iniciar Recorrido (1 al 4)
         </button>
-        <a href="./historia.html" class="btn-vintage btn-sm">Conoce su Historia</a>
-        <a href="./interior.html" class="btn-vintage btn-sm">Recorre el Interior</a>
+        <button type="button" class="btn-vintage btn-sm" id="btn-switch-diesel-hero">
+          Escenario Planta Di&eacute;sel
+        </button>
+        <a href="./interior.html" class="btn-vintage btn-sm">Recorrido 3D</a>
       </div>
     </div>
 
-    <!-- PLACA DE BRONCE DE CADA ESTACION -->
+    <!-- PLACA DE BRONCE DE CADA ESTACION (CON NARRADOR IA) -->
     <div class="tour-plaque-card" id="tour-plaque">
       <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
       <svg class="corner-filigree cf-tr"><use href="#filigree-corner"/></svg>
       <div class="plaque-header">
         <span id="plaque-step">PUNTO DE INTERACCI&Oacute;N 1 DE 4</span>
-        <button type="button" class="plaque-close" id="btn-close-plaque" title="Cerrar placa">Cerrar</button>
+        <div class="plaque-header-actions">
+          <button type="button" class="plaque-close" id="btn-repeat-voice" title="Repetir o silenciar narrador">Narrar Voz</button>
+          <button type="button" class="plaque-close" id="btn-close-plaque" title="Cerrar placa">Cerrar</button>
+        </div>
       </div>
       <h3 id="plaque-title">1. Entrada Principal y Letrero Azul</h3>
       <p id="plaque-desc">Descripci&oacute;n hist&oacute;rica de la estaci&oacute;n.</p>
       <div class="plaque-controls">
         <button type="button" class="btn-vintage btn-sm" id="btn-prev-stop">Anterior</button>
         <button type="button" class="btn-vintage btn-sm" id="btn-home-view">Vista Inicio</button>
-        <button type="button" class="btn-vintage btn-vintage-gold btn-sm" id="btn-next-stop">Siguiente Punto</button>
+        <button type="button" class="btn-vintage btn-vintage-gold btn-sm" id="btn-next-stop">Siguiente Vista</button>
       </div>
     </div>
 
-    <!-- BARRA INFERIOR CON ACCESO DIRECTO A LOS 4 PUNTOS Y ATMOSFERAS (SIN EMOJIS) -->
+    <!-- BARRA INFERIOR: ESCENARIO + VISTAS DINAMICAS (PALACIO Y PLANTA DIESEL) + NARRADOR + ATMOSFERA -->
     <div class="vintage-compass-dock">
       <div class="dock-group">
-        <span class="dock-label">Estaciones:</span>
+        <span class="dock-label">Escenario:</span>
+        <button type="button" class="dock-btn active" id="btn-scene-palace">Palacio Exterior</button>
+        <button type="button" class="dock-btn" id="btn-scene-diesel">Planta Di&eacute;sel 1901</button>
+      </div>
+
+      <div class="dock-divider"></div>
+
+      <div class="dock-group" id="palace-stops-group">
+        <span class="dock-label">Vistas:</span>
         <button type="button" class="dock-btn active" id="dock-home">Inicio</button>
-        <button type="button" class="dock-btn" data-goto-stop="0">1. Entrada</button>
-        <button type="button" class="dock-btn" data-goto-stop="1">2. La Torre</button>
-        <button type="button" class="dock-btn" data-goto-stop="2">3. Planta Di&eacute;sel</button>
-        <button type="button" class="dock-btn" data-goto-stop="3">4. Vista General</button>
+        <button type="button" class="dock-btn" data-goto-stop="0" id="stop-btn-0">1. Entrada</button>
+        <button type="button" class="dock-btn" data-goto-stop="1" id="stop-btn-1">2. La Torre</button>
+        <button type="button" class="dock-btn" data-goto-stop="2" id="stop-btn-2">3. Planta Di&eacute;sel</button>
+        <button type="button" class="dock-btn" data-goto-stop="3" id="stop-btn-3">4. Vista General</button>
         <button type="button" class="dock-btn" id="dock-tour">Recorrido Guiado</button>
       </div>
 
       <div class="dock-divider"></div>
 
       <div class="dock-group">
-        <span class="dock-label">Atm&oacute;sfera 3D:</span>
-        <button type="button" class="dock-btn active" data-weather="day">Luz de D&iacute;a Cl&aacute;sica</button>
-        <button type="button" class="dock-btn" data-weather="sunset">Atardecer Sepia</button>
-        <button type="button" class="dock-btn" data-weather="night">Noche de Faroles</button>
+        <span class="dock-label">Voz IA:</span>
+        <button type="button" class="dock-btn active" id="btn-toggle-narrator">Narrador: Activo</button>
+      </div>
+
+      <div class="dock-divider"></div>
+
+      <div class="dock-group">
+        <span class="dock-label">Atm&oacute;sfera:</span>
+        <button type="button" class="dock-btn active" data-weather="day">D&iacute;a</button>
+        <button type="button" class="dock-btn" data-weather="sunset">Atardecer</button>
+        <button type="button" class="dock-btn" data-weather="night">Noche</button>
       </div>
     </div>
 
@@ -1077,7 +1213,78 @@
     </div>
   </div>
 
-  <!-- SECCION COMPARADOR PLANO VS. ARQUITECTURA (SIN ERRORES 404) -->
+  <!-- ============================================================
+       APARTADO ESPECIAL: PLANTA DIESEL DE UNCIA (planta_diesel.glb)
+       ============================================================ -->
+  <section class="patrimonial-section" id="apartado-planta-diesel">
+    <div class="section-ornament-header">
+      <span class="eyebrow">Ingenier&iacute;a Industrial de 1901 - Sector Miraflores</span>
+      <h2>Apartado Especial: La Planta Di&eacute;sel y los Gemelos del Titanic</h2>
+      <p>Inspecci&oacute;n tridimensional por vistas y narraci&oacute;n hist&oacute;rica de la central termoel&eacute;ctrica alemana que ilumin&oacute; Unc&iacute;a y La Salvadora.</p>
+      <div class="ornament-divider"><span></span></div>
+    </div>
+
+    <div class="diesel-showcase-box">
+      <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
+      <svg class="corner-filigree cf-tr"><use href="#filigree-corner"/></svg>
+      <svg class="corner-filigree cf-bl"><use href="#filigree-corner"/></svg>
+      <svg class="corner-filigree cf-br"><use href="#filigree-corner"/></svg>
+
+      <!-- Vitrina 3D Interactivo de planta_diesel.glb con movimientos por vistas -->
+      <div class="diesel-stage">
+        <span class="diesel-badge">Modelo 3D - planta_diesel.glb (Casa Diesel, Alemania)</span>
+        <model-viewer
+          id="mv-planta-diesel"
+          src="./models/planta_diesel.glb"
+          alt="Modelo 3D de la Planta Diesel de 1901 en Uncia"
+          auto-rotate
+          camera-controls
+          environment-image="neutral"
+          exposure="1.15"
+          shadow-intensity="2"
+          shadow-softness="0.6"
+          tone-mapping="aces"
+          camera-orbit="32deg 70deg 105%"
+          min-camera-orbit="auto auto 30%"
+          max-camera-orbit="auto auto 210%"
+          interpolation-decay="100">
+        </model-viewer>
+        <div class="diesel-toolbar">
+          <button type="button" class="dock-btn" onclick="setDieselShowcaseView('32deg 70deg 105%', '45deg', 1.15, 'Vista General de la Planta Di\u00e9sel de 1901', 'En 1901, Sim\u00f3n I. Pati\u00f1o import\u00f3 desde Alemania los motores de la casa Diesel que dotaron de electricidad a los campamentos mineros, el hospital y todo el pueblo de Unc\u00eda.')">1. Vista General</button>
+          <button type="button" class="dock-btn" onclick="setDieselShowcaseView('0deg 62deg 48%', '22deg', 1.35, 'Sala de Motores Gemelos del Titanic', 'Sus dos \u00fanicos motores gemelos de f\u00e1brica fueron instalados en el transatl\u00e1ntico Titanic, hundi\u00e9ndose en el Atl\u00e1ntico en 1912.')">2. Sala de Motores</button>
+          <button type="button" class="dock-btn" onclick="setDieselShowcaseView('88deg 74deg 75%', '32deg', 1.15, 'Galpones y Llaves Inglesas Gigantes', 'Dentro de estas naves de calamina y mamposter\u00eda se conservan las enormes llaves inglesas con las que se operaban las m\u00e1quinas, imposibles de levantar por un solo hombre.')">3. Galpones Laterales</button>
+          <button type="button" class="dock-btn" onclick="setDieselShowcaseView('-135deg 65deg 95%', '38deg', 0.98, 'Perspectiva Industrial de Miraflores', 'Vista posterior del complejo energ\u00e9tico conectado directamente con las oficinas administrativas y el primer palacio de la familia Pati\u00f1o.')">4. Vista Posterior</button>
+        </div>
+      </div>
+
+      <!-- Cronica y Ficha Tecnica -->
+      <div class="diesel-info">
+        <span class="kicker-tag">Patrimonio Industrial &Uacute;nico en el Mundo</span>
+        <h3 id="diesel-showcase-title">Los Motores Alemanes de 1901</h3>
+        <p id="diesel-showcase-desc">
+          En 1901, Sim&oacute;n I. Pati&ntilde;o import&oacute; desde Alemania colosales motores fabricados por la casa Diesel e instalados junto a su primer palacio en Unc&iacute;a. Estas m&aacute;quinas abastecieron de energ&iacute;a el&eacute;ctrica a los campamentos mineros, los ingenios metal&uacute;rgicos, el hospital y a todo el pueblo.
+        </p>
+        <p>
+          Su relevancia hist&oacute;rica trasciende fronteras: <strong>sus dos &uacute;nicos motores gemelos de f&aacute;brica yacen en el fondo del Atl&aacute;ntico desde 1912 bajo la armadura del transatl&aacute;ntico Titanic</strong>. En la sala a&uacute;n se conservan las pesadas llaves inglesas utilizadas para su mantenimiento, imposibles de levantar por un solo hombre.
+        </p>
+
+        <div class="diesel-ledger">
+          <div><strong>Instalaci&oacute;n</strong>A&ntilde;o 1901</div>
+          <div><strong>Manufactura</strong>Alemania</div>
+          <div><strong>Modelo 3D</strong>planta_diesel.glb</div>
+        </div>
+
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button type="button" class="btn-vintage btn-vintage-gold btn-sm" id="btn-open-diesel-fullscreen">
+            Recorrer Planta Di&eacute;sel en el Visor Principal
+          </button>
+          <a href="./interior.html" class="btn-vintage btn-sm">Ir al Recorrido 3D</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECCION COMPARADOR PLANO VS. ARQUITECTURA -->
   <section class="patrimonial-section" id="plano-comparador">
     <div class="section-ornament-header">
       <span class="eyebrow">Archivo de Restauraci&oacute;n - AECI y Municipio de Unc&iacute;a</span>
@@ -1216,7 +1423,7 @@
     </div>
 
     <div style="text-align:center; margin-top:32px; display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
-      <a href="./interior.html" class="btn-vintage btn-vintage-gold">Caminar por el Interior 3D (WASD)</a>
+      <a href="./interior.html" class="btn-vintage btn-vintage-gold">Entrar al Recorrido 3D (WASD)</a>
       <a href="./historia.html" class="btn-vintage">Inspeccionar Reliquias 3D en Detalle</a>
     </div>
   </section>
@@ -1226,8 +1433,9 @@
     <div class="footer-nav-row">
       <span>UNC&Iacute;A - PROVINCIA RAFAEL BUSTILLO - POTOS&Iacute;, BOLIVIA</span>
       <div style="display:flex; gap:24px; flex-wrap:wrap;">
-        <a href="#visor-exterior">Visor Exterior 3D</a>
-        <a href="./interior.html">Recorrido Interior</a>
+        <a href="#visor-exterior">Escenarios 3D</a>
+        <a href="#apartado-planta-diesel">Planta Di&eacute;sel 1901</a>
+        <a href="./interior.html">Recorrido 3D</a>
         <a href="./historia.html">Galer&iacute;a de Modelos GLB</a>
       </div>
     </div>
@@ -1237,8 +1445,49 @@
     </p>
   </footer>
 
+  <!-- Control de vistas y narrador en la vitrina inferior de Planta Diesel -->
+  <script>
+    window.narratorEnabled = true;
+
+    window.speakPatrimonialText = function(title, description) {
+      if (!window.narratorEnabled || !('speechSynthesis' in window)) return;
+      try {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(title + '. ' + description);
+        utterance.lang = 'es-ES';
+        utterance.rate = 0.96;
+        utterance.pitch = 0.95;
+        const voices = window.speechSynthesis.getVoices();
+        const esVoice = voices.find((v) => v.lang && v.lang.toLowerCase().startsWith('es'));
+        if (esVoice) utterance.voice = esVoice;
+        window.speechSynthesis.speak(utterance);
+      } catch (_) {}
+    };
+
+    function setDieselShowcaseView(orbit, fov, exposure, title, desc) {
+      const mv = document.getElementById('mv-planta-diesel');
+      if (mv) {
+        mv.autoRotate = false;
+        mv.cameraOrbit = orbit;
+        mv.fieldOfView = fov;
+        if (exposure !== undefined) mv.exposure = exposure;
+      }
+      if (title) {
+        const tEl = document.getElementById('diesel-showcase-title');
+        if (tEl) tEl.textContent = title;
+      }
+      if (desc) {
+        const dEl = document.getElementById('diesel-showcase-desc');
+        if (dEl) dEl.textContent = desc;
+      }
+      if (title && desc) {
+        window.speakPatrimonialText(title, desc);
+      }
+    }
+  </script>
+
   <!-- ============================================================
-       MOTOR THREE.JS: TEXTOS CON UNICODE SEGURO Y CERO EMOJIS
+       MOTOR THREE.JS: MULTIESCENARIO CON VISTAS DINAMICAS Y NARRADOR IA
        ============================================================ -->
   <script type="module">
     import * as THREE from 'three';
@@ -1247,27 +1496,32 @@
     import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
     import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 
-    const HOUSE_GLB_URL = new URL('./models/casa-exterior.glb', import.meta.url).href;
+    const HOUSE_GLB_URL  = new URL('./models/casa-exterior.glb', import.meta.url).href;
+    const DIESEL_GLB_URL = new URL('./models/planta_diesel.glb', import.meta.url).href;
     const HOUSE_TARGET_SIZE = 14;
+    const DIESEL_TARGET_SIZE = 11;
 
-    // Limpiar versiones viejas de localStorage que pudieran haber guardado caracteres corruptos
-    try {
-      localStorage.removeItem('patino_vintage_stops_v3');
-    } catch (_) {}
-
-    // 1. VISTA INICIAL FIJA (ENCUADRE ENTRADA LETRERO AZUL + TORRE)
-    let INITIAL_VIEW = {
+    // 1. VISTAS INICIALES DE CADA ESCENARIO
+    let PALACE_INITIAL_VIEW = {
       position: { x: 1.95, y: 1.55, z: 6.15 },
       target:   { x: 2.35, y: 1.50, z: 1.20 },
       fov: 42,
       rollDeg: 0
     };
 
-    // 2. LOS 4 PUNTOS DE INTERACCION (CON CODIFICACION UNICODE INMUNE A FALLOS)
-    let TOUR_STOPS = [
+    let DIESEL_INITIAL_VIEW = {
+      position: { x: 6.40, y: 3.10, z: 7.20 },
+      target:   { x: 0.00, y: 1.40, z: 0.00 },
+      fov: 42,
+      rollDeg: 0
+    };
+
+    // 2. LAS 4 ESTACIONES DEL PALACIO EXTERIOR (casa-exterior.glb)
+    let PALACE_STOPS = [
       {
-        id: 'stop-1',
+        id: 'palace-1',
         number: '1',
+        btnText: '1. Entrada',
         shortLabel: '1. Entrada - Letrero Azul',
         step: 'ESTACI\u00d3N I DE IV - INGRESO PRINCIPAL',
         title: '1. Entrada Principal - Casa Sim\u00f3n Pati\u00f1o',
@@ -1280,8 +1534,9 @@
         rollDeg: 0
       },
       {
-        id: 'stop-2',
+        id: 'palace-2',
         number: '2',
+        btnText: '2. La Torre',
         shortLabel: '2. Torre Escocesa',
         step: 'ESTACI\u00d3N II DE IV - TORRE\u00d3N Y ARQUER\u00cdA',
         title: '2. La Torre de Estilo Escoc\u00e9s y Galer\u00eda',
@@ -1294,8 +1549,9 @@
         rollDeg: 0
       },
       {
-        id: 'stop-3',
+        id: 'palace-3',
         number: '3',
+        btnText: '3. Planta Di\u00e9sel',
         shortLabel: '3. Planta Di\u00e9sel Miraflores',
         step: 'ESTACI\u00d3N III DE IV - COMPLEJO ENERG\u00c9TICO (1901)',
         title: '3. Planta Di\u00e9sel Miraflores (Motores del Titanic)',
@@ -1308,8 +1564,9 @@
         rollDeg: 0
       },
       {
-        id: 'stop-4',
+        id: 'palace-4',
         number: '4',
+        btnText: '4. Vista General',
         shortLabel: '4. Vista General Completa',
         step: 'ESTACI\u00d3N IV DE IV - PANOR\u00c1MICA DEL COMPLEJO',
         title: '4. Vista General del Palacio y Planta Miraflores',
@@ -1323,21 +1580,90 @@
       }
     ];
 
-    // 3. CATALOGO DE MODELOS .GLB
+    // 3. LAS 4 VISTAS DINAMICAS DEL ESCENARIO PLANTA DIESEL (planta_diesel.glb)
+    let DIESEL_STOPS = [
+      {
+        id: 'diesel-1',
+        number: '1',
+        btnText: '1. Fachada Principal',
+        shortLabel: '1. Fachada Planta Di\u00e9sel',
+        step: 'VISTA I DE IV - PLANTA DI\u00c9SEL (1901)',
+        title: '1. Fachada Principal - Planta Di\u00e9sel Miraflores',
+        desc: 'Ingreso principal a los galpones industriales levantados en 1901 por Sim\u00f3n I. Pati\u00f1o para albergar la central termoel\u00e9ctrica que dot\u00f3 de energ\u00eda a La Salvadora y al pueblo de Unc\u00eda.',
+        target: { x: 0.00, y: 1.45, z: 1.80 },
+        yawDeg: 22,
+        pitchDeg: 10,
+        distance: 5.6,
+        fov: 40,
+        rollDeg: 0
+      },
+      {
+        id: 'diesel-2',
+        number: '2',
+        btnText: '2. Sala de Motores',
+        shortLabel: '2. Nave de Motores del Titanic',
+        step: 'VISTA II DE IV - INGENIER\u00cdA ALEMANA',
+        title: '2. Nave de los Motores Gemelos del Titanic',
+        desc: 'En el interior de esta nave operaban los colosales motores tra\u00eddos desde Alemania en 1901. Sus dos \u00fanicos motores gemelos de f\u00e1brica fueron instalados en el transatl\u00e1ntico Titanic, hundido en 1912.',
+        target: { x: -1.40, y: 1.75, z: 0.00 },
+        yawDeg: -42,
+        pitchDeg: 14,
+        distance: 4.8,
+        fov: 38,
+        rollDeg: 0
+      },
+      {
+        id: 'diesel-3',
+        number: '3',
+        btnText: '3. Galpones y Llaves',
+        shortLabel: '3. Galpones y Mantenimiento',
+        step: 'VISTA III DE IV - MAESTRANZA E INGENIO',
+        title: '3. Galpones de Calamina y Llaves Gigantes',
+        desc: 'Estructura lateral de arcos industriales donde se resguardaban los generadores y las gigantescas llaves inglesas de acero, tan pesadas que un solo hombre no pod\u00eda levantarlas.',
+        target: { x: 1.80, y: 1.40, z: -0.80 },
+        yawDeg: 68,
+        pitchDeg: 12,
+        distance: 5.8,
+        fov: 40,
+        rollDeg: 0
+      },
+      {
+        id: 'diesel-4',
+        number: '4',
+        btnText: '4. Panor\u00e1mica Planta',
+        shortLabel: '4. Vista Completa de la Planta',
+        step: 'VISTA IV DE IV - COMPLEJO ENERG\u00c9TICO',
+        title: '4. Vista Panor\u00e1mica de la Planta Di\u00e9sel 1901',
+        desc: 'Vista general de la central el\u00e9ctrica de Miraflores, s\u00edmbolo del auge tecnol\u00f3gico que convirti\u00f3 a Unc\u00eda en una ciudad cosmopolita donde se hablaban quince idiomas.',
+        target: { x: 0.00, y: 1.50, z: 0.00 },
+        yawDeg: -125,
+        pitchDeg: 18,
+        distance: 10.5,
+        fov: 45,
+        rollDeg: 0
+      }
+    ];
+
+    // 4. CATALOGO DE MODELOS .GLB COLOCABLES EN EL MAPA
     let EXTERIOR_PROPS = [
-      { id: 'carruaje',              name: 'Carruaje Ingl\u00e9s (1870)',       file: 'carruaje.glb',              enabled: false, position: { x: 5.2,  y: 0, z: 3.2 }, rotationDeg: -45, scale: 2.4 },
-      { id: 'planta_miraflores',     name: 'Planta Di\u00e9sel (Detalle)',      file: 'planta_miraflores.glb',     enabled: false, position: { x: -6.5, y: 0, z: 2.5 }, rotationDeg: 0,   scale: 3.0 },
-      { id: 'el_tio',                name: 'El T\u00edo de la Mina',            file: 'el_tio.glb',                enabled: false, position: { x: 2.0,  y: 0, z: 4.0 }, rotationDeg: 0,   scale: 1.5 },
-      { id: 'traje_patino',          name: 'Traje de Sim\u00f3n I. Pati\u00f1o', file: 'traje_patino.glb',          enabled: false, position: { x: 1.0,  y: 0, z: 4.0 }, rotationDeg: 0,   scale: 1.7 },
-      { id: 'camara_cine',           name: 'C\u00e1mara de Cine',               file: 'camara_cine.glb',           enabled: false, position: { x: 3.0,  y: 0, z: 4.0 }, rotationDeg: 0,   scale: 1.4 },
-      { id: 'piano_antiguo',         name: 'Piano Antiguo',                     file: 'piano_antiguo.glb',         enabled: false, position: { x: 0.0,  y: 0, z: 4.0 }, rotationDeg: 0,   scale: 1.6 }
+      { id: 'planta_diesel',     name: 'Planta Di\u00e9sel 1901 (planta_diesel.glb)', file: 'planta_diesel.glb',     enabled: false, position: { x: -6.2, y: 0, z: 3.0 }, rotationDeg: 0,   scale: 3.8 },
+      { id: 'planta_miraflores', name: 'Planta Miraflores (planta_miraflores.glb)', file: 'planta_miraflores.glb', enabled: false, position: { x: -6.5, y: 0, z: 2.5 }, rotationDeg: 0,   scale: 3.0 },
+      { id: 'carruaje',          name: 'Carruaje Ingl\u00e9s (1870)',                 file: 'carruaje.glb',          enabled: false, position: { x: 5.2,  y: 0, z: 3.2 }, rotationDeg: -45, scale: 2.4 },
+      { id: 'el_tio',            name: 'El T\u00edo de la Mina',                      file: 'el_tio.glb',            enabled: false, position: { x: 2.0,  y: 0, z: 4.0 }, rotationDeg: 0,   scale: 1.5 },
+      { id: 'traje_patino',      name: 'Traje de Sim\u00f3n I. Pati\u00f1o',           file: 'traje_patino.glb',      enabled: false, position: { x: 1.0,  y: 0, z: 4.0 }, rotationDeg: 0,   scale: 1.7 },
+      { id: 'camara_cine',       name: 'C\u00e1mara de Cine',                         file: 'camara_cine.glb',       enabled: false, position: { x: 3.0,  y: 0, z: 4.0 }, rotationDeg: 0,   scale: 1.4 },
+      { id: 'piano_antiguo',     name: 'Piano Antiguo',                               file: 'piano_antiguo.glb',     enabled: false, position: { x: 0.0,  y: 0, z: 4.0 }, rotationDeg: 0,   scale: 1.6 }
     ];
 
     try {
-      const savedHome = JSON.parse(localStorage.getItem('patino_vintage_home_v4'));
-      if (savedHome) INITIAL_VIEW = savedHome;
-      const savedStops = JSON.parse(localStorage.getItem('patino_vintage_stops_v4'));
-      if (Array.isArray(savedStops) && savedStops.length === 4) TOUR_STOPS = savedStops;
+      const savedPalaceHome = JSON.parse(localStorage.getItem('patino_palace_home_v5'));
+      if (savedPalaceHome) PALACE_INITIAL_VIEW = savedPalaceHome;
+      const savedDieselHome = JSON.parse(localStorage.getItem('patino_diesel_home_v5'));
+      if (savedDieselHome) DIESEL_INITIAL_VIEW = savedDieselHome;
+      const savedPalaceStops = JSON.parse(localStorage.getItem('patino_palace_stops_v5'));
+      if (Array.isArray(savedPalaceStops) && savedPalaceStops.length === 4) PALACE_STOPS = savedPalaceStops;
+      const savedDieselStops = JSON.parse(localStorage.getItem('patino_diesel_stops_v5'));
+      if (Array.isArray(savedDieselStops) && savedDieselStops.length === 4) DIESEL_STOPS = savedDieselStops;
     } catch (_) {}
 
     const preloaderEl   = document.getElementById('vintage-preloader');
@@ -1347,17 +1673,65 @@
     const container      = document.getElementById('exterior-canvas-container');
     const hotspotsLayer  = document.getElementById('hotspots-layer');
     const heroLeftBanner = document.getElementById('hero-left-banner');
+    const heroEyebrow    = document.getElementById('hero-eyebrow');
+    const heroTitle      = document.getElementById('hero-title');
+    const heroDesc       = document.getElementById('hero-desc');
     const tourPlaque     = document.getElementById('tour-plaque');
     const plaqueStep     = document.getElementById('plaque-step');
     const plaqueTitle    = document.getElementById('plaque-title');
     const plaqueDesc     = document.getElementById('plaque-desc');
 
-    // Escena, Camara y Renderizador
+    let activeScenario = 'PALACE'; // 'PALACE' | 'DIESEL'
+    let palaceGroup = null;
+    let dieselScenarioGroup = null;
+
+    function getCurrentStops() {
+      return activeScenario === 'DIESEL' ? DIESEL_STOPS : PALACE_STOPS;
+    }
+    function getCurrentInitialView() {
+      return activeScenario === 'DIESEL' ? DIESEL_INITIAL_VIEW : PALACE_INITIAL_VIEW;
+    }
+
+    // ---------- Narrador de Voz con IA (Web Speech API) ----------
+    const btnToggleNarrator = document.getElementById('btn-toggle-narrator');
+    const btnRepeatVoice    = document.getElementById('btn-repeat-voice');
+
+    function stopNarration() {
+      if ('speechSynthesis' in window) {
+        try { window.speechSynthesis.cancel(); } catch (_) {}
+      }
+    }
+
+    btnToggleNarrator.addEventListener('click', () => {
+      window.narratorEnabled = !window.narratorEnabled;
+      btnToggleNarrator.classList.toggle('active', window.narratorEnabled);
+      btnToggleNarrator.textContent = window.narratorEnabled ? 'Narrador: Activo' : 'Narrador: Silencio';
+      if (!window.narratorEnabled) {
+        stopNarration();
+      } else if (activeStopIndex >= 0) {
+        const st = getCurrentStops()[activeStopIndex];
+        if (st) window.speakPatrimonialText(st.title, st.desc);
+      }
+    });
+
+    btnRepeatVoice.addEventListener('click', () => {
+      if (activeStopIndex >= 0) {
+        const st = getCurrentStops()[activeStopIndex];
+        if (st) {
+          window.narratorEnabled = true;
+          btnToggleNarrator.classList.add('active');
+          btnToggleNarrator.textContent = 'Narrador: Activo';
+          window.speakPatrimonialText(st.title, st.desc);
+        }
+      }
+    });
+
+    // ---------- Escena, Camara y Renderizador ----------
     const scene = new THREE.Scene();
     scene.background = makeSkyGradient('#2B3540', '#B89360');
     scene.fog = new THREE.Fog(0x6e583f, 24, 110);
 
-    const camera = new THREE.PerspectiveCamera(INITIAL_VIEW.fov || 42, window.innerWidth / window.innerHeight, 0.1, 400);
+    const camera = new THREE.PerspectiveCamera(PALACE_INITIAL_VIEW.fov || 42, window.innerWidth / window.innerHeight, 0.1, 400);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance', preserveDrawingBuffer: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -1382,11 +1756,12 @@
     let currentRollDeg = 0;
 
     function applyInitialViewInstant() {
-      camera.position.set(INITIAL_VIEW.position.x, INITIAL_VIEW.position.y, INITIAL_VIEW.position.z);
-      controls.target.set(INITIAL_VIEW.target.x, INITIAL_VIEW.target.y, INITIAL_VIEW.target.z);
-      camera.fov = INITIAL_VIEW.fov || 42;
+      const initV = getCurrentInitialView();
+      camera.position.set(initV.position.x, initV.position.y, initV.position.z);
+      controls.target.set(initV.target.x, initV.target.y, initV.target.z);
+      camera.fov = initV.fov || 42;
       camera.updateProjectionMatrix();
-      currentRollDeg = INITIAL_VIEW.rollDeg || 0;
+      currentRollDeg = initV.rollDeg || 0;
       controls.update();
     }
     applyInitialViewInstant();
@@ -1414,7 +1789,7 @@
       };
     }
 
-    // Iluminacion y Terreno
+    // ---------- Iluminacion y Terreno ----------
     const ambientLight = new THREE.AmbientLight(0xffe8c2, 0.7);
     scene.add(ambientLight);
 
@@ -1475,7 +1850,7 @@
       scene.add(hill);
     }
 
-    // Cargador GLTF con Draco y Meshopt
+    // ---------- Cargador GLTF ----------
     const dracoLoader = new DRACOLoader();
     dracoLoader.setDecoderPath('https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/libs/draco/');
     const gltfLoader = new GLTFLoader();
@@ -1518,13 +1893,12 @@
     gltfLoader.load(
       HOUSE_GLB_URL,
       (gltf) => {
-        const palace = gltf.scene;
-        normalizeAndCenterModel(palace, HOUSE_TARGET_SIZE);
-        scene.add(palace);
+        palaceGroup = gltf.scene;
+        normalizeAndCenterModel(palaceGroup, HOUSE_TARGET_SIZE);
+        scene.add(palaceGroup);
         applyInitialViewInstant();
         renderer.render(scene, camera);
 
-        // Capturar imagen automatica del modelo 3D para el comparador inferior (sin errores 404)
         try {
           const snap = renderer.domElement.toDataURL('image/jpeg', 0.92);
           const afterImg = document.getElementById('comp-after-img');
@@ -1544,11 +1918,106 @@
           preloaderFill.style.width = pct + '%';
         }
       },
-      (err) => {
-        console.error('Error cargando casa-exterior.glb:', err);
+      () => {
         preloaderEl.classList.add('curtain-open');
       }
     );
+
+    // ---------- Sellos Dorados (1, 2, 3, 4) Dinamicos para Ambos Escenarios ----------
+    let activeStopIndex = -1;
+    let autoTourInterval = null;
+    let camTween = null;
+    const hotspotDomList = [];
+
+    function rebuildScenarioHotspotsAndButtons() {
+      hotspotsLayer.innerHTML = '';
+      hotspotDomList.length = 0;
+      const stops = getCurrentStops();
+
+      stops.forEach((stop, index) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'seal-hotspot';
+        btn.innerHTML = `<span>${stop.number}</span><span class="seal-tooltip">${stop.shortLabel}</span>`;
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          stopAutoTour();
+          goToStation(index);
+        });
+        hotspotsLayer.appendChild(btn);
+        hotspotDomList.push({ btn, stop });
+
+        const dockBtn = document.getElementById(`stop-btn-${index}`);
+        if (dockBtn) dockBtn.textContent = stop.btnText;
+      });
+
+      populateEditorStopDropdown();
+      updateActiveButtonsUI();
+    }
+
+    // Cambiar entre Escenario I (Palacio) y Escenario II (Planta Diesel con sus propias 4 vistas)
+    async function switchHeroScenario(mode) {
+      if (activeScenario === mode) return;
+      stopAutoTour();
+      stopNarration();
+      activeStopIndex = -1;
+      tourPlaque.classList.remove('active');
+      heroLeftBanner.classList.remove('dimmed');
+
+      const btnPalace = document.getElementById('btn-scene-palace');
+      const btnDiesel = document.getElementById('btn-scene-diesel');
+      const btnSwitchHero = document.getElementById('btn-switch-diesel-hero');
+
+      if (mode === 'DIESEL') {
+        activeScenario = 'DIESEL';
+        btnPalace.classList.remove('active');
+        btnDiesel.classList.add('active');
+
+        if (palaceGroup) palaceGroup.visible = false;
+
+        heroEyebrow.textContent = 'Escenario Industrial - Miraflores, Unc\u00eda (1901)';
+        heroTitle.textContent = 'Planta Di\u00e9sel de 1901';
+        heroDesc.textContent = 'Central termoel\u00e9ctrica alemana instalada por Sim\u00f3n I. Pati\u00f1o junto a su palacio. Explora sus 4 vistas interactivas con narraci\u00f3n por voz.';
+        if (btnSwitchHero) btnSwitchHero.textContent = 'Volver al Palacio Exterior';
+
+        if (!dieselScenarioGroup) {
+          try {
+            const gltf = await new Promise((res, rej) => gltfLoader.load(DIESEL_GLB_URL, res, undefined, rej));
+            dieselScenarioGroup = gltf.scene;
+            normalizeAndCenterModel(dieselScenarioGroup, DIESEL_TARGET_SIZE);
+            scene.add(dieselScenarioGroup);
+          } catch (err) {
+            console.warn('No se encontr\u00f3 models/planta_diesel.glb:', err);
+          }
+        }
+        if (dieselScenarioGroup) dieselScenarioGroup.visible = true;
+      } else {
+        activeScenario = 'PALACE';
+        btnDiesel.classList.remove('active');
+        btnPalace.classList.add('active');
+
+        if (dieselScenarioGroup) dieselScenarioGroup.visible = false;
+        if (palaceGroup) palaceGroup.visible = true;
+
+        heroEyebrow.textContent = 'Unc\u00eda - Potos\u00ed, Bolivia (1899 - 1905)';
+        heroTitle.textContent = 'La Casa de Sim\u00f3n I. Pati\u00f1o';
+        heroDesc.textContent = 'La primera residencia que el Rey del Esta\u00f1o levant\u00f3 en el pueblo donde comenz\u00f3 su fortuna. Rec\oacute;rrela por estaciones con narraci\u00f3n por voz o explora el escenario de la Planta Di\u00e9sel de 1901.';
+        if (btnSwitchHero) btnSwitchHero.textContent = 'Escenario Planta Di\u00e9sel';
+      }
+
+      rebuildScenarioHotspotsAndButtons();
+      goToInitialHomeView();
+    }
+
+    document.getElementById('btn-scene-palace').addEventListener('click', () => switchHeroScenario('PALACE'));
+    document.getElementById('btn-scene-diesel').addEventListener('click', () => switchHeroScenario('DIESEL'));
+    document.getElementById('btn-switch-diesel-hero').addEventListener('click', () => {
+      switchHeroScenario(activeScenario === 'PALACE' ? 'DIESEL' : 'PALACE');
+    });
+    document.getElementById('btn-open-diesel-fullscreen').addEventListener('click', () => {
+      document.getElementById('visor-exterior').scrollIntoView({ behavior: 'smooth' });
+      switchHeroScenario('DIESEL');
+    });
 
     async function spawnOrUpdateProp(def) {
       let entry = loadedProps.get(def.id);
@@ -1567,6 +2036,7 @@
           entry = { holder, raw };
           loadedProps.set(def.id, entry);
         } catch (_) {
+          flashMsg(`A\u00fan no se encuentra models/${def.file}`);
           return;
         }
       }
@@ -1577,25 +2047,6 @@
       entry.holder.position.set(def.position.x, def.position.y, def.position.z);
       entry.holder.rotation.y = THREE.MathUtils.degToRad(def.rotationDeg || 0);
     }
-
-    // Sellos Dorados (1, 2, 3, 4) y Vuelo Dinamico
-    let activeStopIndex = -1;
-    let autoTourInterval = null;
-    let camTween = null;
-
-    const hotspotDomList = TOUR_STOPS.map((stop, index) => {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'seal-hotspot';
-      btn.innerHTML = `<span>${stop.number}</span><span class="seal-tooltip">${stop.shortLabel}</span>`;
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        stopAutoTour();
-        goToStation(index);
-      });
-      hotspotsLayer.appendChild(btn);
-      return { btn, stop };
-    });
 
     function flyCameraTo(destPos, destTarget, destFov, destRoll, duration = 1.4) {
       camTween = {
@@ -1623,13 +2074,14 @@
       });
     }
 
-    function goToStation(index, duration = 1.45) {
-      if (index < 0 || index >= TOUR_STOPS.length) {
+    function goToStation(index, duration = 1.45, shouldNarrate = true) {
+      const stops = getCurrentStops();
+      if (index < 0 || index >= stops.length) {
         goToInitialHomeView();
         return;
       }
       activeStopIndex = index;
-      const stop = TOUR_STOPS[index];
+      const stop = stops[index];
 
       heroLeftBanner.classList.add('dimmed');
       plaqueStep.textContent = stop.step;
@@ -1641,6 +2093,10 @@
       const camPos = computePosFromAngles(targetVec, stop.yawDeg, stop.pitchDeg, stop.distance);
       flyCameraTo(camPos, targetVec, stop.fov || 40, stop.rollDeg || 0, duration);
 
+      if (shouldNarrate && window.speakPatrimonialText) {
+        window.speakPatrimonialText(stop.title, stop.desc);
+      }
+
       if (edSelectStop) {
         edSelectStop.value = String(index);
         syncEditorStopUI();
@@ -1650,15 +2106,17 @@
 
     function goToInitialHomeView() {
       stopAutoTour();
+      stopNarration();
       activeStopIndex = -1;
       tourPlaque.classList.remove('active');
       heroLeftBanner.classList.remove('dimmed');
 
+      const initV = getCurrentInitialView();
       flyCameraTo(
-        new THREE.Vector3(INITIAL_VIEW.position.x, INITIAL_VIEW.position.y, INITIAL_VIEW.position.z),
-        new THREE.Vector3(INITIAL_VIEW.target.x, INITIAL_VIEW.target.y, INITIAL_VIEW.target.z),
-        INITIAL_VIEW.fov || 42,
-        INITIAL_VIEW.rollDeg || 0,
+        new THREE.Vector3(initV.position.x, initV.position.y, initV.position.z),
+        new THREE.Vector3(initV.target.x, initV.target.y, initV.target.z),
+        initV.fov || 42,
+        initV.rollDeg || 0,
         1.35
       );
       updateActiveButtonsUI();
@@ -1669,13 +2127,14 @@
         stopAutoTour();
         return;
       }
+      const stops = getCurrentStops();
       document.getElementById('dock-tour').classList.add('active');
       document.getElementById('dock-tour').textContent = 'Pausar Recorrido';
       goToStation(0);
       autoTourInterval = setInterval(() => {
-        const next = (activeStopIndex + 1) % TOUR_STOPS.length;
+        const next = (activeStopIndex + 1) % stops.length;
         goToStation(next);
-      }, 5200);
+      }, 6500);
     }
 
     function stopAutoTour() {
@@ -1694,17 +2153,20 @@
     document.getElementById('dock-home').addEventListener('click', goToInitialHomeView);
     document.getElementById('dock-tour').addEventListener('click', startAutoTour);
     document.getElementById('btn-close-plaque').addEventListener('click', () => {
+      stopNarration();
       tourPlaque.classList.remove('active');
       heroLeftBanner.classList.remove('dimmed');
     });
     document.getElementById('btn-home-view').addEventListener('click', goToInitialHomeView);
     document.getElementById('btn-prev-stop').addEventListener('click', () => {
       stopAutoTour();
-      goToStation((activeStopIndex - 1 + TOUR_STOPS.length) % TOUR_STOPS.length);
+      const stops = getCurrentStops();
+      goToStation((activeStopIndex - 1 + stops.length) % stops.length);
     });
     document.getElementById('btn-next-stop').addEventListener('click', () => {
       stopAutoTour();
-      goToStation((activeStopIndex + 1) % TOUR_STOPS.length);
+      const stops = getCurrentStops();
+      goToStation((activeStopIndex + 1) % stops.length);
     });
 
     document.querySelectorAll('[data-goto-stop]').forEach((btn) => {
@@ -1742,7 +2204,7 @@
       if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') keyState.fast = false;
     });
 
-    // Editor de Angulos y Puntos (Sin Emojis)
+    // Editor de Angulos y Puntos
     const editorDrawer     = document.getElementById('editor-drawer');
     const btnToggleEditor  = document.getElementById('btn-toggle-editor');
     const edSelectStop     = document.getElementById('ed-select-stop');
@@ -1781,16 +2243,20 @@
       setTimeout(() => { if (edMsg.textContent === txt) edMsg.textContent = ''; }, 3500);
     }
 
-    TOUR_STOPS.forEach((s, idx) => {
-      const opt = document.createElement('option');
-      opt.value = String(idx);
-      opt.textContent = s.shortLabel;
-      edSelectStop.appendChild(opt);
-    });
+    function populateEditorStopDropdown() {
+      edSelectStop.innerHTML = '';
+      getCurrentStops().forEach((s, idx) => {
+        const opt = document.createElement('option');
+        opt.value = String(idx);
+        opt.textContent = s.shortLabel;
+        edSelectStop.appendChild(opt);
+      });
+      syncEditorStopUI();
+    }
 
     function syncEditorStopUI() {
       const idx = parseInt(edSelectStop.value, 10) || 0;
-      const st = TOUR_STOPS[idx];
+      const st = getCurrentStops()[idx];
       if (!st) return;
       edRngYaw.value = st.yawDeg;
       edRngPitch.value = st.pitchDeg;
@@ -1804,16 +2270,25 @@
       edLblFov.textContent = `${st.fov || 40}\u00b0`;
       edLblRoll.textContent = `${st.rollDeg || 0}\u00b0`;
     }
-    syncEditorStopUI();
+
+    function saveCurrentStopsToStorage() {
+      if (activeScenario === 'DIESEL') {
+        localStorage.setItem('patino_diesel_stops_v5', JSON.stringify(DIESEL_STOPS));
+      } else {
+        localStorage.setItem('patino_palace_stops_v5', JSON.stringify(PALACE_STOPS));
+      }
+    }
+
+    rebuildScenarioHotspotsAndButtons();
 
     edSelectStop.addEventListener('change', () => {
       syncEditorStopUI();
-      goToStation(parseInt(edSelectStop.value, 10), 0.9);
+      goToStation(parseInt(edSelectStop.value, 10), 0.9, false);
     });
 
     function onStopAngleSliderInput() {
       const idx = parseInt(edSelectStop.value, 10) || 0;
-      const st = TOUR_STOPS[idx];
+      const st = getCurrentStops()[idx];
       if (!st) return;
 
       st.yawDeg = parseFloat(edRngYaw.value) || 0;
@@ -1834,7 +2309,7 @@
       currentRollDeg = st.rollDeg;
       controls.update();
 
-      localStorage.setItem('patino_vintage_stops_v4', JSON.stringify(TOUR_STOPS));
+      saveCurrentStopsToStorage();
       updateActiveButtonsUI();
     }
 
@@ -1844,20 +2319,20 @@
 
     edBtnCaptureCam.addEventListener('click', () => {
       const idx = parseInt(edSelectStop.value, 10) || 0;
-      const st = TOUR_STOPS[idx];
+      const st = getCurrentStops()[idx];
       const angles = extractAnglesFromCam(camera.position, new THREE.Vector3(st.target.x, st.target.y, st.target.z));
       st.yawDeg = angles.yawDeg;
       st.pitchDeg = angles.pitchDeg;
       st.distance = angles.distance;
       syncEditorStopUI();
-      localStorage.setItem('patino_vintage_stops_v4', JSON.stringify(TOUR_STOPS));
-      flashMsg(`Angulo guardado en Punto ${st.number}`);
+      saveCurrentStopsToStorage();
+      flashMsg(`\u00c1ngulo guardado en Punto ${st.number}`);
     });
 
     EXTERIOR_PROPS.forEach((p) => {
       const opt = document.createElement('option');
       opt.value = p.id;
-      opt.textContent = `${p.name} (${p.file})`;
+      opt.textContent = p.name;
       edSelectProp.appendChild(opt);
     });
 
@@ -1913,15 +2388,15 @@
         const pt = hits[0].point;
         if (clickTargetMode === 'SEAL') {
           const idx = parseInt(edSelectStop.value, 10) || 0;
-          const st = TOUR_STOPS[idx];
+          const st = getCurrentStops()[idx];
           st.target = { x: Number(pt.x.toFixed(2)), y: Number(pt.y.toFixed(2)), z: Number(pt.z.toFixed(2)) };
           const angles = extractAnglesFromCam(camera.position, pt);
           st.yawDeg = angles.yawDeg;
           st.pitchDeg = angles.pitchDeg;
           st.distance = angles.distance;
           syncEditorStopUI();
-          localStorage.setItem('patino_vintage_stops_v4', JSON.stringify(TOUR_STOPS));
-          goToStation(idx, 0.8);
+          saveCurrentStopsToStorage();
+          goToStation(idx, 0.8, false);
           flashMsg(`Punto ${st.number} actualizado.`);
         } else if (clickTargetMode === 'PROP') {
           const p = getSelectedProp();
@@ -1938,7 +2413,7 @@
     });
 
     document.getElementById('ed-btn-save-home').addEventListener('click', () => {
-      INITIAL_VIEW = {
+      const viewObj = {
         position: {
           x: Number(camera.position.x.toFixed(2)),
           y: Number(camera.position.y.toFixed(2)),
@@ -1952,23 +2427,32 @@
         fov: Math.round(camera.fov),
         rollDeg: Math.round(currentRollDeg)
       };
-      localStorage.setItem('patino_vintage_home_v4', JSON.stringify(INITIAL_VIEW));
+      if (activeScenario === 'DIESEL') {
+        DIESEL_INITIAL_VIEW = viewObj;
+        localStorage.setItem('patino_diesel_home_v5', JSON.stringify(viewObj));
+      } else {
+        PALACE_INITIAL_VIEW = viewObj;
+        localStorage.setItem('patino_palace_home_v5', JSON.stringify(viewObj));
+      }
       flashMsg('Vista actual fijada como Inicio.');
     });
 
     document.getElementById('ed-btn-reset').addEventListener('click', () => {
-      localStorage.removeItem('patino_vintage_home_v4');
-      localStorage.removeItem('patino_vintage_stops_v4');
+      localStorage.removeItem('patino_palace_home_v5');
+      localStorage.removeItem('patino_diesel_home_v5');
+      localStorage.removeItem('patino_palace_stops_v5');
+      localStorage.removeItem('patino_diesel_stops_v5');
       location.reload();
     });
 
     document.getElementById('ed-btn-copy').addEventListener('click', () => {
       const code =
-        `let INITIAL_VIEW = ${JSON.stringify(INITIAL_VIEW, null, 2)};\n\n` +
-        `let TOUR_STOPS = ${JSON.stringify(TOUR_STOPS, null, 2)};\n\n` +
-        `let EXTERIOR_PROPS = ${JSON.stringify(EXTERIOR_PROPS, null, 2)};`;
+        `let PALACE_INITIAL_VIEW = ${JSON.stringify(PALACE_INITIAL_VIEW, null, 2)};\n\n` +
+        `let DIESEL_INITIAL_VIEW = ${JSON.stringify(DIESEL_INITIAL_VIEW, null, 2)};\n\n` +
+        `let PALACE_STOPS = ${JSON.stringify(PALACE_STOPS, null, 2)};\n\n` +
+        `let DIESEL_STOPS = ${JSON.stringify(DIESEL_STOPS, null, 2)};`;
       navigator.clipboard.writeText(code);
-      flashMsg('Configuracion copiada al portapapeles.');
+      flashMsg('Configuraci\u00f3n copiada al portapapeles.');
     });
 
     // Selector de Atmosfera 3D

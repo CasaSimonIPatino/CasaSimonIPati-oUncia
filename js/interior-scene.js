@@ -1,6 +1,6 @@
 // ============================================================
-// Casa de Simón I. Patiño — Uncía
-// Escena 3D del INTERIOR — Estética de Época / Vintage Patrimonial
+// Casa de Simon I. Patino - Uncia
+// Recorrido 3D Interior: Un unico visor por estacion, Narrador IA y sin props sueltos
 // ============================================================
 
 import * as THREE from 'three';
@@ -8,118 +8,104 @@ import { PointerLockControls } from 'three/addons/controls/PointerLockControls.j
 import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
 import {
   loadGLB,
-  scaleToFit,
-  centerOnGround,
   enableShadows,
   disposeObject
 } from './glb-loader.js';
 
-// ---------- 9 Estaciones Históricas del Interior (Los 73 Ambientes) ----------
+// ---------- LOS 9 PUNTOS DE INTERES CON TUS ARCHIVOS EXACTOS ----------
 const HOTSPOTS = [
   {
     id: 'spot-1',
-    label: 'I',
-    title: 'I. Ingreso a los 73 Ambientes',
-    image: './img/1.jpg',
-    description: 'El palacio que Simón I. Patiño prometió a su esposa Albina Rodríguez Ocampo tras vender sus alhajas cuenta con 73 ambientes divididos por puertas acristaladas (modificadas tras pasar a manos de COMIBOL en 1952).',
+    label: '1',
+    title: '1. Ingreso para entrar',
+    glbModel: './models/casa.glb',
+    fallbackGlb: ['./casa.glb', './models/casa-exterior.glb'],
+    description: 'Umbral principal del palacio que Sim\u00f3n I. Pati\u00f1o prometi\u00f3 a su esposa Albina Rodr\u00edguez Ocampo cuando vendi\u00f3 sus joyas en Oruro para apoyarlo en La Salvadora. Sus 73 ambientes fueron divididos con puertas acristaladas tras pasar a manos de COMIBOL en 1952.',
     position: { x: -7.85, y: 16.00, z: -10.26 }
   },
   {
     id: 'spot-2',
-    label: 'II',
-    title: 'II. Oficinas Administrativas de Miraflores',
-    description: 'Desde este despacho en la zona norte de Uncía se administró el complejo minero La Salvadora (1899–1905), donde Patiño consolidó su fortuna tras adquirir la propiedad de su socio Sergio Ortiz.',
+    label: '2',
+    title: '2. Cuarto de cuadros',
+    glbModel: './models/casita.glb',
+    fallbackGlb: ['./casita.glb', './models/casa.glb'],
+    description: 'Galer\u00eda de retratos, maquetas y lienzos de \u00e9poca que documentaban el ascenso del cochabambino Sim\u00f3n I. Pati\u00f1o desde los parajes del cerro Juan del Valle hasta convertirse en uno de los hombres m\u00e1s acaudalados del mundo.',
     position: { x: -6.07, y: 16.00, z: -3.49 }
   },
   {
     id: 'spot-3',
-    label: 'III',
-    title: 'III. Salón de Fiestas (Muros Rojo Guindo)',
-    description: 'Ambiente señorial cuyos muros cubiertos en rojo guindo contrastaban con la blancura de sus arcos. Aquí resonaba el piano europeo que, según la leyenda de Uncía, aún se escucha tocar por las noches junto al sonido de un brindis.',
+    label: '3',
+    title: '3. Sal\u00f3n doctorcitos y festividad',
+    glbModel: './models/traje_patino.glb',
+    description: 'Sal\u00f3n conmemorativo dedicado a las celebraciones, recepciones de gala y tradiciones festivas de Unc\u00eda y el norte de Potos\u00ed, donde la elegancia del frac y el bast\u00f3n de principios del siglo XX se entrelazaba con la identidad cultural minera.',
     position: { x: -4.78, y: 16.00, z: 7.80 }
   },
   {
     id: 'spot-4',
-    label: 'IV',
-    title: 'IV. Comedor y Techos de Cristal Veneciano',
-    description: 'Rodeado por majestuosas mesas y sillas oscuras. Como si del coliseo de Roma se tratara, sus techos estaban cubiertos con cristales italianos procedentes de Venecia y murales románticos de sus canales.',
+    label: '4',
+    title: '4. Piano',
+    glbModel: './models/piano_antiguo.glb',
+    description: 'Piano europeo transportado con enorme esfuerzo a trav\u00e9s de los Andes para amenizar las veladas del palacio. Seg\u00fan la leyenda de Unc\u00eda, m\u00e1s de ochenta a\u00f1os despu\u00e9s de la partida de Pati\u00f1o, por las noches a\u00fan parecen escucharse su melod\u00eda y el tintineo de un brindis.',
     position: { x: -9.70, y: 16.00, z: 13.16 }
   },
   {
     id: 'spot-5',
-    label: 'V',
-    title: 'V. Archivo y Vista a los Motores del Titanic',
-    description: 'Desde sus ventanales se divisan los enormes edificios de calamina que albergan los motores alemanes Diesel instalados en 1901 —cuyos dos gemelos duermen bajo el casco del Titanic desde 1912— y las pesadas llaves inglesas.',
+    label: '5',
+    title: '5. El T\u00edo',
+    glbModel: './models/el_tio.glb',
+    description: 'Representaci\u00f3n del \u00abT\u00edo\u00bb de la mina, se\u00f1or y guardi\u00e1n de los socavones de La Salvadora y del cerro Juan del Valle, a quien los m\u00e1s de 5.000 trabajadores mineros entregaban hojas de coca, cigarrillos y alcohol en busca de protecci\u00f3n y vetas ricas.',
     position: { x: -4.85, y: 16.00, z: 23.16 }
   },
   {
     id: 'spot-6',
-    label: 'VI',
-    title: 'VI. Dormitorio y Tapices de Bolonia',
-    description: 'Durante los siete años en que la familia Patiño residió en la casa (1899–1905), las paredes de las habitaciones estuvieron empapeladas con los paisajes verdes de los jardines franceses de Bolonia.',
+    label: '6',
+    title: '6. Carruaje',
+    glbModel: './models/carruaje.glb',
+    description: 'En una sala contigua a la capilla privada descansa este carruaje ingl\u00e9s rehabilitado de 1870 en el que Sim\u00f3n I. Pati\u00f1o paseaba por las calles de Unc\u00eda al lado de su esposa Albina antes de la inauguraci\u00f3n del ferrocarril.',
     position: { x: 3.85, y: 16.00, z: 6.89 }
   },
   {
     id: 'spot-7',
-    label: 'VII',
-    title: 'VII. Galería Cosmopolita de los 15 Idiomas',
-    description: 'Pasillo que conectaba las dependencias públicas y privadas en una época en que en Uncía se hablaban hasta 15 idiomas y donde el 1 de mayo de 1923 los 5.000 mineros fundaron el primer sindicato minero de Bolivia.',
+    label: '7',
+    title: '7. Sal\u00f3n de baile',
+    image: './img/salon de baile.png',
+    fallbackImages: [
+      './salon de baile.png',
+      './models/salon de baile.png',
+      './img/salon.png',
+      './salon.png',
+      './models/salon.png'
+    ],
+    description: 'Imponente sal\u00f3n de baile y recepciones cuyos muros estaban cubiertos de un intenso rojo guindo que contrastaba con la blancura de sus arcos, iluminado bajo techos de cristales italianos de Venecia con murales de sus canales.',
     position: { x: 3.77, y: 16.00, z: -9.46 }
   },
   {
     id: 'spot-8',
-    label: 'VIII',
-    title: 'VIII. Capilla Privada y Sala del Carruaje (1870)',
-    description: 'Capilla del empresario que aún conserva sus bancos de madera. En la habitación contigua descansa el carruaje inglés rehabilitado de 1870 en el que Patiño paseaba por Uncía al lado de su esposa Albina.',
+    label: '8',
+    title: '8. Reserva silla',
+    glbModel: './models/carruaje.glb',
+    description: 'Ambiente de resguardo de la siller\u00eda se\u00f1orial de madera oscura, mesas de recepci\u00f3n y las bancas originales de madera de la capilla privada que a\u00fan se conservan dentro de la residencia.',
     position: { x: 0.19, y: 16.00, z: -23.99 }
   },
   {
     id: 'spot-9',
-    label: 'IX',
-    title: 'IX. Farmacia Privada y Área de Servicios',
-    description: 'Patiño no se privó de ningún adelanto: dotó al palacio de su propia farmacia, cocina y almacenes antes de que el centro de operaciones se trasladara a Catavi en 1924.',
+    label: '9',
+    title: '9. Sala de videos antiguo',
+    glbModel: './models/camara_cine.glb',
+    description: 'Archivo audiovisual de la \u00e9poca dorada de Unc\u00eda y Catavi, cuando en la localidad se escuchaban hasta 15 idiomas y los proyectores cinematogr\u00e1ficos de 35 mm iluminaban las noches del norte de Potos\u00ed.',
     position: { x: -7.61, y: 16.00, z: -24.82 }
   }
 ];
 
-const MODEL_URL = new URL('../models/casa-interior.glb?v=2', import.meta.url).href;
+const MODEL_URL = new URL('../models/casa-interior.glb?v=3', import.meta.url).href;
 const EYE_HEIGHT = 1.65;
 const INTERACTION_DISTANCE = 2.8;
 const START_POS = { x: -10.63, y: 16.58, z: -13.48 };
 const BASE_SPEED = 3.6;
 const SPRINT_SPEED = 9.0;
 
-// ---------- Objetos 3D del Museo dentro del Recorrido ----------
-const PROPS = [
-  {
-    id: 'piano',
-    url: new URL('../models/piano_antiguo.glb', import.meta.url).href,
-    position: { x: -6.3, z: 7.8 },
-    size: { height: 1.25 },
-    rotationY: Math.PI / 2
-  },
-  {
-    id: 'camara-cine',
-    url: new URL('../models/camara_cine.glb', import.meta.url).href,
-    position: { x: 4.8, z: -9.46 },
-    size: { height: 1.4 },
-    rotationY: -Math.PI / 2
-  },
-  {
-    id: 'traje',
-    url: new URL('../models/traje_patino.glb', import.meta.url).href,
-    position: { x: 5.0, z: 6.89 },
-    size: { height: 1.75 },
-    rotationY: -Math.PI / 2
-  },
-  {
-    id: 'planta-miraflores',
-    url: new URL('../models/planta_miraflores.glb', import.meta.url).href,
-    position: { x: -3.6, z: 23.16 },
-    size: { largest: 1.2 },
-    rotationY: 0
-  }
-];
+// Sin modelos GLB extra sueltos en los pasillos del interior
+const PROPS = [];
 
 // ---------- Referencias del DOM ----------
 const wrap = document.getElementById('scene-interior');
@@ -135,24 +121,73 @@ const lightControlPanel = document.getElementById('light-control-panel');
 const interiorDock = document.getElementById('interior-dock');
 
 const panel = document.getElementById('detail-panel');
+const panelTag = document.getElementById('panel-tag');
 const panelTitle = document.getElementById('panel-title');
-const panelImg = document.getElementById('panel-img');
 const panelDesc = document.getElementById('panel-desc');
 const panelClose = panel.querySelector('.close-btn');
+const panelGlbViewer = document.getElementById('panel-glb-viewer');
+const panelStationImg = document.getElementById('panel-station-img');
+const panelMediaHint = document.getElementById('panel-media-hint');
+
+const glbBtnReset    = document.getElementById('glb-btn-reset');
+const glbBtnMacro    = document.getElementById('glb-btn-macro');
+const glbBtnSpin     = document.getElementById('glb-btn-spin');
+const glbBtnNarrator = document.getElementById('glb-btn-narrator');
 
 const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
 
-if (lightControlPanel) {
-  lightControlPanel.addEventListener('click', (e) => e.stopPropagation());
-}
-if (interiorDock) {
-  interiorDock.addEventListener('click', (e) => e.stopPropagation());
+if (lightControlPanel) lightControlPanel.addEventListener('click', (e) => e.stopPropagation());
+if (interiorDock) interiorDock.addEventListener('click', (e) => e.stopPropagation());
+if (panel) panel.addEventListener('click', (e) => e.stopPropagation());
+
+// ---------- Narrador de Voz con IA (Web Speech API) ----------
+let narratorActive = true;
+
+function speakInteriorStation(title, description) {
+  if (!narratorActive || !('speechSynthesis' in window)) return;
+  try {
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(title + '. ' + description);
+    u.lang = 'es-ES';
+    u.rate = 0.96;
+    u.pitch = 0.95;
+    const voices = window.speechSynthesis.getVoices();
+    const esVoice = voices.find((v) => v.lang && v.lang.toLowerCase().startsWith('es'));
+    if (esVoice) u.voice = esVoice;
+    window.speechSynthesis.speak(u);
+    if (glbBtnNarrator) {
+      glbBtnNarrator.classList.add('active');
+      glbBtnNarrator.textContent = 'Narrador IA: Hablando (Pausar)';
+    }
+  } catch (_) {}
 }
 
-// ---------- Escena, Cámara y Renderizador con Tono de Museo ----------
+function stopInteriorNarration() {
+  if ('speechSynthesis' in window) {
+    try { window.speechSynthesis.cancel(); } catch (_) {}
+  }
+}
+
+if (glbBtnNarrator) {
+  glbBtnNarrator.addEventListener('click', () => {
+    narratorActive = !narratorActive;
+    if (!narratorActive) {
+      stopInteriorNarration();
+      glbBtnNarrator.classList.remove('active');
+      glbBtnNarrator.textContent = 'Narrador IA: Silencio (Activar)';
+    } else {
+      glbBtnNarrator.classList.add('active');
+      glbBtnNarrator.textContent = 'Narrador IA: Hablando (Pausar)';
+      const spot = HOTSPOTS[currentOpenedSpotIndex];
+      if (spot) speakInteriorStation(spot.title, spot.description);
+    }
+  });
+}
+
+// ---------- Escena con Atmosfera Vintage Antigua ----------
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x241c15);
-scene.fog = new THREE.Fog(0x241c15, 25, 95);
+scene.background = new THREE.Color(0x21160d);
+scene.fog = new THREE.FogExp2(0x24180e, 0.018);
 
 const camera = new THREE.PerspectiveCamera(
   60, wrap.clientWidth / wrap.clientHeight, 0.05, 200
@@ -166,7 +201,7 @@ renderer.setSize(wrap.clientWidth, wrap.clientHeight);
 renderer.shadowMap.enabled = true;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.1;
+renderer.toneMappingExposure = 1.08;
 wrap.appendChild(renderer.domElement);
 
 const labelRenderer = new CSS2DRenderer();
@@ -177,11 +212,11 @@ labelRenderer.domElement.style.left = '0';
 labelRenderer.domElement.style.pointerEvents = 'none';
 wrap.appendChild(labelRenderer.domElement);
 
-// ---------- Iluminación Natural Cálida de Museo ----------
-const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
+// ---------- Iluminacion Vintage / Antigua ----------
+const ambientLight = new THREE.AmbientLight(0xffd7a8, 0.95);
 scene.add(ambientLight);
 
-const hemiLight = new THREE.HemisphereLight(0xffffff, 0xd8cfc4, 0.85);
+const hemiLight = new THREE.HemisphereLight(0xffe4bd, 0x5c3c20, 0.78);
 scene.add(hemiLight);
 
 const pointLights = [];
@@ -196,8 +231,10 @@ const posicionesLuces = [
   { x: -6.68, y: 18.20, z: -14.66 }
 ];
 
+let userPointIntensity = 15;
+
 posicionesLuces.forEach((pos) => {
-  const luz = new THREE.PointLight(0xfff4e0, 12, 26, 1.5);
+  const luz = new THREE.PointLight(0xffa64d, userPointIntensity, 28, 1.45);
   luz.position.set(pos.x, pos.y, pos.z);
   scene.add(luz);
   pointLights.push(luz);
@@ -215,15 +252,15 @@ if (toggleLightPanelBtn && lightPanelContent) {
   toggleLightPanelBtn.addEventListener('click', () => {
     panelExpanded = !panelExpanded;
     lightPanelContent.style.display = panelExpanded ? 'flex' : 'none';
-    toggleLightPanelBtn.textContent = panelExpanded ? '−' : '+';
+    toggleLightPanelBtn.textContent = panelExpanded ? '-' : '+';
   });
 }
 
 if (rangePoint && valPoint) {
   rangePoint.addEventListener('input', (e) => {
-    const val = parseFloat(e.target.value);
-    valPoint.textContent = val;
-    pointLights.forEach((l) => { l.intensity = val; });
+    userPointIntensity = parseFloat(e.target.value);
+    valPoint.textContent = userPointIntensity;
+    pointLights.forEach((l) => { l.intensity = userPointIntensity; });
   });
 }
 
@@ -235,7 +272,49 @@ if (rangeAmbient && valAmbient) {
   });
 }
 
-// ---------- Habitación de Reemplazo (Fallback) ----------
+document.querySelectorAll('[data-light-preset]').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-light-preset]').forEach((b) => b.classList.remove('active'));
+    btn.classList.add('active');
+    const mode = btn.dataset.lightPreset;
+
+    if (mode === 'candle') {
+      scene.background.setHex(0x21160d);
+      scene.fog.color.setHex(0x24180e);
+      ambientLight.color.setHex(0xffd7a8);
+      ambientLight.intensity = 0.95;
+      hemiLight.color.setHex(0xffe4bd);
+      hemiLight.groundColor.setHex(0x5c3c20);
+      userPointIntensity = 15;
+      pointLights.forEach((l) => { l.color.setHex(0xffa64d); l.intensity = 15; });
+    } else if (mode === 'chandelier') {
+      scene.background.setHex(0x2a1f16);
+      scene.fog.color.setHex(0x2a1f16);
+      ambientLight.color.setHex(0xffe6c4);
+      ambientLight.intensity = 1.25;
+      hemiLight.color.setHex(0xfff0d6);
+      hemiLight.groundColor.setHex(0x7a5838);
+      userPointIntensity = 22;
+      pointLights.forEach((l) => { l.color.setHex(0xffc982); l.intensity = 22; });
+    } else if (mode === 'museum') {
+      scene.background.setHex(0x292420);
+      scene.fog.color.setHex(0x292420);
+      ambientLight.color.setHex(0xffffff);
+      ambientLight.intensity = 1.4;
+      hemiLight.color.setHex(0xffffff);
+      hemiLight.groundColor.setHex(0xd8cfc4);
+      userPointIntensity = 14;
+      pointLights.forEach((l) => { l.color.setHex(0xfff4e0); l.intensity = 14; });
+    }
+
+    if (rangePoint) rangePoint.value = userPointIntensity;
+    if (valPoint) valPoint.textContent = userPointIntensity;
+    if (rangeAmbient) rangeAmbient.value = ambientLight.intensity;
+    if (valAmbient) valAmbient.textContent = ambientLight.intensity;
+  });
+});
+
+// ---------- Habitacion de Reemplazo ----------
 let floorMesh = null;
 const collidables = [];
 
@@ -258,7 +337,7 @@ function buildPlaceholderRoom() {
   return group;
 }
 
-// ---------- Carga del Modelo Interior (.GLB) ----------
+// ---------- Carga del Modelo Interior (casa-interior.glb) ----------
 let realModelLoaded = false;
 let placeholderGroup = null;
 let hotspotsPlaced = false;
@@ -292,10 +371,10 @@ function showFallback() {
 function onModelProgress(xhr) {
   if (xhr.lengthComputable && xhr.total > 0) {
     const pct = Math.round((xhr.loaded / xhr.total) * 100);
-    setLoadingProgress(pct, `Restaurando salones interiores (${pct}%)…`);
+    setLoadingProgress(pct, `Cargando los 73 ambientes (${pct}%)...`);
   } else {
     const mb = (xhr.loaded / 1048576).toFixed(1);
-    setLoadingProgress(Math.min(92, xhr.loaded / 450000), `Descargando modelo interior (${mb} MB)…`);
+    setLoadingProgress(Math.min(92, xhr.loaded / 450000), `Descargando modelo interior (${mb} MB)...`);
   }
 }
 
@@ -318,18 +397,15 @@ async function loadInterior() {
     floorMesh = null;
 
     const model = gltf.scene;
-    const houseMeshes = [];
     model.traverse((n) => {
       if (n.isMesh) {
         n.castShadow = true;
         n.receiveShadow = true;
-        // Renderizar por ambas caras para evitar techos o muros invisibles
         if (n.material) {
           const mats = Array.isArray(n.material) ? n.material : [n.material];
           mats.forEach((m) => { m.side = THREE.DoubleSide; });
         }
         collidables.push(n);
-        houseMeshes.push(n);
         if (!floorMesh && /floor|piso|suelo/i.test(n.name)) floorMesh = n;
       }
     });
@@ -341,48 +417,10 @@ async function loadInterior() {
     finishLoading();
     if (noteEl) noteEl.hidden = true;
     placeHotspots();
-    loadProps(houseMeshes);
   } catch (error) {
     clearTimeout(fallbackTimer);
     console.error('ERROR AL CARGAR GLB:', MODEL_URL, error.message);
     showFallback();
-  }
-}
-
-const probeRay = new THREE.Raycaster();
-const DOWN = new THREE.Vector3(0, -1, 0);
-
-function findFloorY(x, z, meshes) {
-  probeRay.set(new THREE.Vector3(x, START_POS.y + 1, z), DOWN);
-  probeRay.far = 12;
-  const hits = probeRay.intersectObjects(meshes, false);
-  return hits.length ? hits[0].point.y : START_POS.y - EYE_HEIGHT;
-}
-
-async function loadProps(houseMeshes) {
-  for (const def of PROPS) {
-    try {
-      const gltf = await loadGLB(def.url);
-      const obj = gltf.scene;
-
-      scaleToFit(obj, def.size);
-      obj.rotation.y = def.rotationY || 0;
-      centerOnGround(obj);
-
-      const holder = new THREE.Group();
-      holder.add(obj);
-      holder.position.set(
-        def.position.x,
-        findFloorY(def.position.x, def.position.z, houseMeshes),
-        def.position.z
-      );
-
-      enableShadows(holder);
-      holder.traverse((n) => { if (n.isMesh) collidables.push(n); });
-      scene.add(holder);
-    } catch (error) {
-      console.warn(`No se pudo cargar "${def.id}":`, error.message);
-    }
   }
 }
 
@@ -393,18 +431,43 @@ if (noteEl) {
   if (closeBtn) closeBtn.addEventListener('click', () => { noteEl.hidden = true; });
 }
 
-// ---------- Sellos Dorados (Hotspots) y Teletransporte por Salas ----------
+// ---------- Marcadores 3D (1 al 9) y Apertura de Cuadro Unico ----------
+let currentOpenedSpotIndex = 0;
+let currentGlbFallbackIdx = 0;
+let currentImgFallbackIdx = 0;
+
+// Si un archivo .glb (como casa.glb o casita.glb) esta en otra ruta, probar respaldos automaticamente
+if (panelGlbViewer) {
+  panelGlbViewer.addEventListener('error', () => {
+    const spot = HOTSPOTS[currentOpenedSpotIndex];
+    if (spot && Array.isArray(spot.fallbackGlb) && currentGlbFallbackIdx < spot.fallbackGlb.length) {
+      panelGlbViewer.src = spot.fallbackGlb[currentGlbFallbackIdx++];
+    }
+  });
+}
+
+// Si la imagen salon de baile.png esta en raiz o en img/ o en models/, probar respaldos automaticamente
+if (panelStationImg) {
+  panelStationImg.addEventListener('error', () => {
+    const spot = HOTSPOTS[currentOpenedSpotIndex];
+    if (spot && Array.isArray(spot.fallbackImages) && currentImgFallbackIdx < spot.fallbackImages.length) {
+      panelStationImg.src = spot.fallbackImages[currentImgFallbackIdx++];
+    }
+  });
+}
+
 function placeHotspots() {
   if (hotspotsPlaced) return;
   hotspotsPlaced = true;
 
-  HOTSPOTS.forEach((spot) => {
+  HOTSPOTS.forEach((spot, index) => {
     const el = document.createElement('div');
     el.className = 'hotspot';
+    el.title = spot.title;
     el.innerHTML = `<span class="hotspot-label">${spot.label}</span>`;
     el.addEventListener('click', (e) => {
       e.stopPropagation();
-      openPanel(spot);
+      openPanelByIndex(index);
     });
     const obj = new CSS2DObject(el);
     obj.position.set(spot.position.x, spot.position.y, spot.position.z);
@@ -412,7 +475,6 @@ function placeHotspots() {
   });
 }
 
-// Teletransportar al jugador a cualquiera de las 9 salas desde la barra inferior
 document.querySelectorAll('.room-jump-btn').forEach((btn) => {
   btn.addEventListener('click', () => {
     const idx = parseInt(btn.dataset.spotIndex, 10);
@@ -421,31 +483,102 @@ document.querySelectorAll('.room-jump-btn').forEach((btn) => {
 
     player.position.set(spot.position.x, spot.position.y + 0.5, spot.position.z + 1.1);
     settleFrames = 45;
-    openPanel(spot);
+    openPanelByIndex(idx);
   });
 });
 
-function openPanel(spot) {
+function openPanelByIndex(index) {
+  if (index < 0 || index >= HOTSPOTS.length) return;
+  currentOpenedSpotIndex = index;
+  currentGlbFallbackIdx = 0;
+  currentImgFallbackIdx = 0;
+  const spot = HOTSPOTS[index];
+
+  document.querySelectorAll('.room-jump-btn').forEach((b, i) => {
+    b.classList.toggle('active', i === index);
+  });
+
+  if (panelTag) panelTag.textContent = `Estaci\u00f3n ${index + 1} de ${HOTSPOTS.length} - Recorrido 3D`;
   panelTitle.textContent = spot.title;
   panelDesc.textContent = spot.description;
 
-  if (panelImg) {
-    if (spot.image) {
-      panelImg.src = spot.image;
-      panelImg.hidden = false;
-    } else {
-      panelImg.removeAttribute('src');
-      panelImg.hidden = true;
+  // Mostrar IMAGEN (en Salon de Baile) o UN UNICO MODELO GLB en las demas estaciones
+  if (spot.image) {
+    if (panelGlbViewer) panelGlbViewer.style.display = 'none';
+    if (glbBtnReset) glbBtnReset.style.display = 'none';
+    if (glbBtnMacro) glbBtnMacro.style.display = 'none';
+    if (glbBtnSpin)  glbBtnSpin.style.display = 'none';
+    if (panelMediaHint) panelMediaHint.textContent = 'Registro Fotogr\u00e1fico del Sal\u00f3n';
+
+    if (panelStationImg) {
+      panelStationImg.style.display = 'block';
+      panelStationImg.src = spot.image;
+    }
+  } else {
+    if (panelStationImg) panelStationImg.style.display = 'none';
+    if (glbBtnReset) glbBtnReset.style.display = 'inline-block';
+    if (glbBtnMacro) glbBtnMacro.style.display = 'inline-block';
+    if (glbBtnSpin)  glbBtnSpin.style.display = 'inline-block';
+    if (panelMediaHint) panelMediaHint.textContent = 'Arrastra para girar - Rueda para acercar';
+
+    if (panelGlbViewer && spot.glbModel) {
+      panelGlbViewer.style.display = 'block';
+      panelGlbViewer.src = spot.glbModel;
+      panelGlbViewer.cameraOrbit = '30deg 72deg 105%';
+      panelGlbViewer.fieldOfView = '42deg';
+      panelGlbViewer.autoRotate = true;
     }
   }
 
   panel.classList.add('open');
+  speakInteriorStation(spot.title, spot.description);
   clearMoveState();
   if (controlsLocked) controls.unlock();
   if (interactHUD) interactHUD.style.display = 'none';
 }
 
+function openPanel(spot) {
+  const idx = HOTSPOTS.findIndex((s) => s.id === spot.id);
+  openPanelByIndex(idx >= 0 ? idx : 0);
+}
+
+if (glbBtnReset && panelGlbViewer) {
+  glbBtnReset.addEventListener('click', () => {
+    panelGlbViewer.cameraOrbit = '30deg 72deg 105%';
+    panelGlbViewer.fieldOfView = '42deg';
+  });
+}
+if (glbBtnMacro && panelGlbViewer) {
+  glbBtnMacro.addEventListener('click', () => {
+    panelGlbViewer.autoRotate = false;
+    panelGlbViewer.cameraOrbit = '0deg 65deg 52%';
+    panelGlbViewer.fieldOfView = '24deg';
+  });
+}
+if (glbBtnSpin && panelGlbViewer) {
+  glbBtnSpin.addEventListener('click', () => {
+    panelGlbViewer.autoRotate = !panelGlbViewer.autoRotate;
+  });
+}
+
+document.getElementById('panel-prev-spot').addEventListener('click', () => {
+  const prev = (currentOpenedSpotIndex - 1 + HOTSPOTS.length) % HOTSPOTS.length;
+  const spot = HOTSPOTS[prev];
+  player.position.set(spot.position.x, spot.position.y + 0.5, spot.position.z + 1.1);
+  settleFrames = 45;
+  openPanelByIndex(prev);
+});
+
+document.getElementById('panel-next-spot').addEventListener('click', () => {
+  const next = (currentOpenedSpotIndex + 1) % HOTSPOTS.length;
+  const spot = HOTSPOTS[next];
+  player.position.set(spot.position.x, spot.position.y + 0.5, spot.position.z + 1.1);
+  settleFrames = 45;
+  openPanelByIndex(next);
+});
+
 function closePanel() {
+  stopInteriorNarration();
   panel.classList.remove('open');
   if (!isTouch) controls.lock();
 }
@@ -479,11 +612,11 @@ function checkProximityInteraction() {
 
   if (activeHotspot && interactHUD) {
     if (isTouch) {
-      interactHUD.innerHTML = `Toca para examinar cédula: <strong>${activeHotspot.title}</strong>`;
+      interactHUD.innerHTML = `Toca para ver historia y modelo 3D: <strong>${activeHotspot.title}</strong>`;
       interactHUD.style.pointerEvents = 'auto';
       interactHUD.onclick = () => openPanel(activeHotspot);
     } else {
-      interactHUD.innerHTML = `Presiona <kbd>E</kbd> para leer cédula: <strong>${activeHotspot.title}</strong>`;
+      interactHUD.innerHTML = `Presiona <kbd>E</kbd> para ver historia y pieza: <strong>${activeHotspot.title}</strong>`;
       interactHUD.style.pointerEvents = 'none';
     }
     interactHUD.style.display = 'block';
@@ -598,6 +731,7 @@ if (!isTouch) {
 // ---------- Movimiento y Colisiones ----------
 const raycaster = new THREE.Raycaster();
 const downRay = new THREE.Raycaster();
+const DOWN = new THREE.Vector3(0, -1, 0);
 const tmpForward = new THREE.Vector3();
 const tmpRight = new THREE.Vector3();
 const tmpMove = new THREE.Vector3();
@@ -658,6 +792,12 @@ const clock = new THREE.Clock();
 function animate() {
   requestAnimationFrame(animate);
   const dt = Math.min(clock.getDelta(), 0.1);
+  const elapsed = clock.elapsedTime;
+
+  pointLights.forEach((l, i) => {
+    const flicker = 1 + Math.sin(elapsed * 4.5 + i * 1.7) * 0.045;
+    l.intensity = userPointIntensity * flicker;
+  });
 
   if ((controlsLocked || isTouch) && !panel.classList.contains('open')) {
     const moved = tryMove(dt);
@@ -671,7 +811,7 @@ function animate() {
 
   if (coordDebugEl) {
     const p = camera.position;
-    coordDebugEl.textContent = `x: ${p.x.toFixed(2)} · y: ${p.y.toFixed(2)} · z: ${p.z.toFixed(2)}`;
+    coordDebugEl.textContent = `x: ${p.x.toFixed(2)} - y: ${p.y.toFixed(2)} - z: ${p.z.toFixed(2)}`;
   }
 
   renderer.render(scene, camera);

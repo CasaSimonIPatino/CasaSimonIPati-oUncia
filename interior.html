@@ -3,13 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Recorrido Interior 3D — Palacio de Simón I. Patiño, Uncía</title>
-  <meta name="description" content="Camina en primera persona por el interior de los 73 ambientes del Palacio de Simón I. Patiño en Uncía, Potosí." />
+  <title>Recorrido 3D - Palacio de Sim&oacute;n I. Pati&ntilde;o, Unc&iacute;a</title>
+  <meta name="description" content="Recorrido 3D en primera persona con iluminaci&oacute;n de &eacute;poca por los 73 ambientes del Palacio de Sim&oacute;n I. Pati&ntilde;o en Unc&iacute;a." />
 
-  <!-- Tipografías Clásicas de Época -->
+  <!-- Tipografias Clasicas de Epoca -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,500;0,700;1,400&display=swap" rel="stylesheet">
+
+  <!-- Visor 3D Interactivo para el modelo GLB unico de cada ficha -->
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"></script>
 
   <!-- Importmap de Three.js r160 -->
   <script type="importmap">
@@ -22,14 +25,11 @@
   </script>
 
   <style>
-    /* ============================================================
-       DIRECCIÓN DE ARTE: ESTÉTICA DE ÉPOCA / VINTAGE PATRIMONIAL
-       ============================================================ */
     :root {
       --bg-mahogany: #120D08;
       --bg-charcoal: #1C150E;
       --surface-leather: #261C14;
-      --surface-plaque: rgba(20, 14, 9, 0.94);
+      --surface-plaque: rgba(20, 14, 9, 0.95);
 
       --gold-bright: #DFC07A;
       --gold-vintage: #C5A059;
@@ -61,18 +61,17 @@
 
     a { color: inherit; text-decoration: none; }
 
-    /* Grano de película antigua y viñeta */
     .vintage-film-overlay {
       position: fixed;
       inset: 0;
       pointer-events: none;
       z-index: 900;
       background:
-        radial-gradient(circle at 50% 50%, transparent 62%, rgba(8, 5, 3, 0.65) 100%),
-        repeating-linear-gradient(0deg, rgba(197, 160, 89, 0.01) 0px, rgba(197, 160, 89, 0.01) 1px, transparent 1px, transparent 3px);
+        radial-gradient(circle at 50% 50%, transparent 56%, rgba(10, 6, 3, 0.72) 100%),
+        repeating-linear-gradient(0deg, rgba(197, 160, 89, 0.014) 0px, rgba(197, 160, 89, 0.014) 1px, transparent 1px, transparent 3px);
     }
 
-    /* Pre-loader de Época conectado a casa-interior.glb */
+    /* Pre-loader de Epoca */
     #vintage-preloader {
       position: fixed;
       inset: 0;
@@ -142,7 +141,7 @@
       color: var(--text-sepia);
     }
 
-    /* Navegación Ornamental */
+    /* Navegacion Superior */
     .vintage-nav {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -222,7 +221,6 @@
       touch-action: none;
     }
 
-    /* Marco Perimetral con Filigranas */
     .stage-ornamental-frame {
       position: absolute;
       inset: 14px;
@@ -244,7 +242,6 @@
     .cf-bl { bottom: 4px; left: 4px; transform: scaleY(-1); }
     .cf-br { bottom: 4px; right: 4px; transform: scale(-1, -1); }
 
-    /* Retícula central (Crosshair de Época) */
     .crosshair {
       position: absolute;
       top: 50%; left: 50%;
@@ -258,7 +255,7 @@
       pointer-events: none;
     }
 
-    /* Tarjeta Señorial de Ingreso (PointerLock Prompt) */
+    /* Tarjeta de Ingreso al Recorrido 3D */
     .enter-prompt {
       position: absolute;
       inset: 0;
@@ -276,7 +273,7 @@
       border: 4px double var(--gold-vintage);
       padding: 36px 42px;
       text-align: center;
-      max-width: 440px;
+      max-width: 450px;
       box-shadow: 0 25px 70px rgba(0, 0, 0, 0.9);
     }
     .enter-prompt .card-eyebrow {
@@ -313,7 +310,7 @@
       border: 2px double #F5EFE6;
     }
 
-    /* Lector de Coordenadas de Época */
+    /* Coordenadas */
     .coord-debug {
       position: absolute;
       top: calc(var(--nav-h) + 18px);
@@ -333,7 +330,7 @@
     /* Aviso de Proximidad (Tecla E) */
     .interact-hud {
       position: absolute;
-      bottom: 110px;
+      bottom: 115px;
       left: 50%;
       transform: translateX(-50%);
       background: var(--surface-plaque);
@@ -342,7 +339,7 @@
       font-family: var(--font-chronicle);
       font-size: 1.15rem;
       border: var(--border-double);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85);
       display: none;
       z-index: 40;
       pointer-events: none;
@@ -358,7 +355,7 @@
       font-weight: 700;
     }
 
-    /* Panel de Control de Iluminación de Época */
+    /* Panel de Iluminacion Antigua / Vintage */
     .light-control-panel {
       position: absolute;
       top: calc(var(--nav-h) + 56px);
@@ -367,12 +364,12 @@
       color: var(--text-ivory);
       padding: 14px 18px;
       border: var(--border-double);
-      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.75);
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.78);
       z-index: 30;
       display: flex;
       flex-direction: column;
       gap: 10px;
-      min-width: 220px;
+      min-width: 240px;
       pointer-events: auto;
     }
     .light-panel-header {
@@ -411,11 +408,36 @@
       accent-color: var(--gold-vintage);
       cursor: pointer;
     }
+    .vintage-light-presets {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+      margin-top: 2px;
+    }
+    .preset-btn {
+      flex: 1;
+      background: rgba(38, 28, 20, 0.9);
+      border: 1px solid rgba(197, 160, 89, 0.4);
+      color: var(--text-sepia);
+      font-family: var(--font-label);
+      font-variant: small-caps;
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      padding: 5px 6px;
+      cursor: pointer;
+    }
+    .preset-btn.active,
+    .preset-btn:hover {
+      background: var(--gold-vintage);
+      color: #120D08;
+      border-color: var(--gold-bright);
+      font-weight: 700;
+    }
 
-    /* Marcadores 3D de Puntos de Interés (Sellos Dorados de Época) */
+    /* Marcadores 3D (Sellos Numerados 1 al 9) */
     .hotspot {
       position: relative;
-      width: 32px; height: 32px;
+      width: 34px; height: 34px;
       border-radius: 50%;
       background: radial-gradient(circle, #E5C882 0%, #8C6930 100%);
       border: 2px double #120D08;
@@ -435,82 +457,92 @@
     .hotspot-label {
       font-family: var(--font-monumental);
       font-weight: 800;
-      font-size: 0.78rem;
+      font-size: 0.82rem;
       color: #120D08;
       pointer-events: none;
     }
 
-    /* Barra Inferior de Teletransporte por Salas (Salas I - IX) */
+    /* Barra Inferior de las 9 Salas (1 al 9) */
     .interior-compass-dock {
       position: absolute;
-      bottom: 20px;
+      bottom: 18px;
       left: 50%;
       transform: translateX(-50%);
       z-index: 30;
       background: var(--surface-plaque);
       border: var(--border-double);
-      padding: 10px 18px;
+      padding: 9px 14px;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 6px;
       flex-wrap: wrap;
       justify-content: center;
-      max-width: 94vw;
-      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.85);
+      width: max-content;
+      max-width: 96vw;
+      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.88);
     }
     .dock-caption {
       font-family: var(--font-label);
       font-variant: small-caps;
-      font-size: 0.68rem;
-      letter-spacing: 0.16em;
+      font-size: 0.65rem;
+      letter-spacing: 0.14em;
       color: var(--gold-vintage);
       margin-right: 4px;
     }
     .room-jump-btn {
-      background: rgba(38, 28, 20, 0.85);
-      border: 1px solid rgba(197, 160, 89, 0.4);
+      background: rgba(38, 28, 20, 0.88);
+      border: 1px solid rgba(197, 160, 89, 0.38);
       color: var(--text-ivory);
-      font-family: var(--font-monumental);
-      font-size: 0.74rem;
-      padding: 6px 11px;
+      font-family: var(--font-label);
+      font-variant: small-caps;
+      font-size: 0.64rem;
+      letter-spacing: 0.08em;
+      padding: 6px 9px;
       cursor: pointer;
       transition: all 0.2s ease;
     }
-    .room-jump-btn:hover {
+    .room-jump-btn:hover,
+    .room-jump-btn.active {
       background: var(--gold-vintage);
       color: #120D08;
       border-color: var(--gold-bright);
+      font-weight: 700;
     }
 
-    /* Panel Lateral de Detalle (Placa de Bronce y Pergamino) */
+    /* ============================================================
+       PANEL LATERAL CON UN SOLO VISOR (GLB O IMAGEN) E HISTORIA
+       ============================================================ */
     .detail-panel {
       position: fixed;
-      top: calc(var(--nav-h) + 16px);
-      right: 22px;
-      width: min(390px, 92vw);
-      max-height: calc(100vh - var(--nav-h) - 40px);
+      top: calc(var(--nav-h) + 14px);
+      right: 20px;
+      width: min(440px, 94vw);
+      max-height: calc(100vh - var(--nav-h) - 86px);
       overflow-y: auto;
       background: var(--surface-plaque);
       border: 4px double var(--gold-vintage);
-      padding: 30px 26px 26px;
+      padding: 26px 24px 24px;
       color: var(--text-ivory);
       z-index: 300;
-      transform: translateX(calc(100% + 40px));
+      transform: translateX(calc(100% + 50px));
       transition: transform 0.4s var(--ease-vintage);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+      box-shadow: 0 22px 65px rgba(0, 0, 0, 0.92);
     }
     .detail-panel.open {
       transform: translateX(0);
     }
     .detail-panel .close-btn {
       position: absolute;
-      top: 14px; right: 14px;
-      background: rgba(38, 28, 20, 0.9);
+      top: 12px; right: 14px;
+      background: rgba(38, 28, 20, 0.95);
       border: 1px solid var(--gold-vintage);
       color: var(--gold-bright);
-      width: 32px; height: 32px;
+      padding: 4px 10px;
       cursor: pointer;
-      font-size: 0.95rem;
+      font-family: var(--font-label);
+      font-variant: small-caps;
+      font-size: 0.66rem;
+      letter-spacing: 0.1em;
     }
     .detail-panel .close-btn:hover {
       background: var(--gold-vintage);
@@ -520,34 +552,98 @@
       font-family: var(--font-label);
       font-variant: small-caps;
       color: var(--gold-vintage);
-      font-size: 0.72rem;
-      letter-spacing: 0.2em;
-      margin-bottom: 8px;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      margin-bottom: 6px;
       display: block;
     }
     .detail-panel h3 {
       font-family: var(--font-monumental);
-      font-size: 1.55rem;
-      margin: 0 0 14px;
+      font-size: 1.45rem;
+      margin: 0 0 12px;
       line-height: 1.2;
       color: var(--text-ivory);
       border-bottom: 1px solid rgba(197, 160, 89, 0.28);
-      padding-bottom: 10px;
-    }
-    #panel-img {
-      width: 100%;
-      max-height: 210px;
-      object-fit: cover;
-      margin: 6px 0 14px;
-      border: 2px double var(--gold-vintage);
-    }
-    #panel-desc {
-      color: var(--text-sepia);
-      font-size: 1.15rem;
-      line-height: 1.65;
+      padding-bottom: 8px;
     }
 
-    /* Aviso de modelo de reemplazo */
+    /* Cuadro Unico de Exhibicion (3D o Imagen) */
+    .card-glb-box {
+      position: relative;
+      width: 100%;
+      margin: 8px 0 14px;
+      border: 2px double var(--gold-vintage);
+      background:
+        radial-gradient(circle at 50% 45%, rgba(223, 192, 122, 0.28) 0%, rgba(38, 28, 20, 0.6) 52%, #090604 92%);
+      overflow: hidden;
+    }
+    .card-glb-hint {
+      position: absolute;
+      top: 8px; left: 10px;
+      z-index: 4;
+      background: rgba(18, 13, 8, 0.88);
+      border: 1px solid rgba(197, 160, 89, 0.45);
+      color: var(--gold-bright);
+      font-family: var(--font-label);
+      font-variant: small-caps;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      padding: 3px 8px;
+      pointer-events: none;
+    }
+    #panel-glb-viewer {
+      width: 100%;
+      height: 250px;
+      background: transparent;
+      --poster-color: transparent;
+      display: block;
+    }
+    #panel-spot-image {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      display: none;
+    }
+    .card-glb-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 8px;
+      background: rgba(12, 8, 5, 0.95);
+      border-top: 1px solid rgba(197, 160, 89, 0.3);
+      justify-content: center;
+    }
+    .card-glb-btn {
+      background: rgba(38, 28, 20, 0.9);
+      border: 1px solid rgba(197, 160, 89, 0.45);
+      color: var(--text-ivory);
+      font-family: var(--font-label);
+      font-variant: small-caps;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+    .card-glb-btn:hover {
+      background: var(--gold-vintage);
+      color: #120D08;
+    }
+
+    #panel-desc {
+      color: var(--text-sepia);
+      font-size: 1.12rem;
+      line-height: 1.65;
+      margin-bottom: 14px;
+    }
+
+    .panel-nav-footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(197, 160, 89, 0.25);
+    }
+
     .model-note {
       position: absolute;
       left: 24px; bottom: 90px;
@@ -566,7 +662,6 @@
       color: var(--gold-bright); cursor: pointer;
     }
 
-    /* Controles táctiles para móvil */
     .touch-controls {
       position: absolute;
       bottom: 95px; right: 24px;
@@ -593,13 +688,13 @@
 
     @media (max-width: 860px) {
       .nav-links { display: none; }
-      .light-control-panel { top: auto; bottom: 95px; left: 16px; min-width: 185px; }
+      .light-control-panel { top: auto; bottom: 110px; left: 14px; min-width: 195px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- OVERLAY DE PELÍCULA ANTIGUA Y VIÑETA -->
+  <!-- OVERLAY DE PELICULA ANTIGUA Y VINETA -->
   <div class="vintage-film-overlay"></div>
 
   <!-- FILIGRANA SVG REUTILIZABLE -->
@@ -613,44 +708,42 @@
     </defs>
   </svg>
 
-  <!-- NAVEGACIÓN SUPERIOR ORNAMENTAL -->
+  <!-- NAVEGACION SUPERIOR -->
   <nav class="vintage-nav">
     <a href="./index.html" class="nav-brand">
       <span class="nav-brand-emblem"><span>SP</span></span>
-      <span>PALACIO PATIÑO · UNCÍA</span>
+      <span>PALACIO PATI&Ntilde;O - UNC&Iacute;A</span>
     </a>
     <ul class="nav-links">
       <li><a href="./index.html">Exterior 3D</a></li>
-      <li><a href="./historia.html">Crónica y Reliquias 3D</a></li>
-      <li><a href="./interior.html" class="active">Interior (73 Ambientes)</a></li>
+      <li><a href="./historia.html">Historia</a></li>
+      <li><a href="./interior.html" class="active">Recorrido 3D</a></li>
     </ul>
     <div>
-      <a href="./historia.html" class="btn-vintage-sm">Ver Catálogo de Piezas (.GLB) →</a>
+      <a href="./historia.html" class="btn-vintage-sm">Cat&aacute;logo de Reliquias</a>
     </div>
   </nav>
 
-  <!-- CONTENEDOR PRINCIPAL DE LA ESCENA INTERIOR -->
+  <!-- ESCENA 3D INTERIOR -->
   <div class="scene-wrap" id="scene-interior">
 
-    <!-- PRE-LOADER DE ÉPOCA CONECTADO AL .GLB INTERIOR -->
+    <!-- PRE-LOADER DE EPOCA -->
     <div class="scene-loading" id="vintage-preloader">
       <div class="preloader-crest">
         <svg viewBox="0 0 64 64">
           <polygon points="32,6 58,20 58,44 32,58 6,44 6,20" stroke-width="1.5"/>
-          <polygon points="32,14 50,24 50,40 32,50 14,40 14,24" stroke-width="1"/>
           <circle cx="32" cy="32" r="6" stroke-width="1.5"/>
         </svg>
       </div>
-      <span class="preloader-eyebrow">Inspección Interior en Primera Persona · Sector Miraflores</span>
-      <h1 class="preloader-title">LOS 73 AMBIENTES DEL PALACIO</h1>
+      <span class="preloader-eyebrow">Iluminaci&oacute;n Antigua de &Eacute;poca - Sector Miraflores</span>
+      <h1 class="preloader-title">RECORRIDO 3D DEL PALACIO</h1>
       <div class="preloader-pct" id="interior-pct">0%</div>
       <div class="preloader-track">
         <div class="preloader-fill" id="interior-fill"></div>
       </div>
-      <p class="preloader-status">Cargando salones y mobiliario histórico (casa-interior.glb)…</p>
+      <p class="preloader-status">Preparando los 73 ambientes y candelabros antiguos...</p>
     </div>
 
-    <!-- Marco Ornamental Perimetral -->
     <div class="stage-ornamental-frame">
       <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
       <svg class="corner-filigree cf-tr"><use href="#filigree-corner"/></svg>
@@ -659,90 +752,130 @@
     </div>
 
     <div class="model-note" hidden>
-      <button aria-label="Cerrar aviso">✕</button>
-      No se encontró <code>models/casa-interior.glb</code>; se muestra la sala de reemplazo.
+      <button aria-label="Cerrar aviso">Cerrar</button>
+      No se encontr&oacute; <code>models/casa-interior.glb</code>; se muestra la sala de reemplazo.
     </div>
 
     <div class="crosshair"></div>
 
-    <!-- TARJETA SEÑORIAL DE INGRESO AL RECORRIDO -->
+    <!-- TARJETA DE INGRESO AL RECORRIDO 3D -->
     <div class="enter-prompt" id="enter-prompt">
       <div class="card">
         <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
         <svg class="corner-filigree cf-tr"><use href="#filigree-corner"/></svg>
         <svg class="corner-filigree cf-bl"><use href="#filigree-corner"/></svg>
         <svg class="corner-filigree cf-br"><use href="#filigree-corner"/></svg>
-        <span class="card-eyebrow">Residencia de Simón y Albina (1899 – 1905)</span>
-        <h2>Ingresar a los Salones del Palacio</h2>
+        <span class="card-eyebrow">Residencia de Sim&oacute;n y Albina (1899 - 1905)</span>
+        <h2>Iniciar Recorrido 3D</h2>
         <p>
-          Camina con las teclas <strong>W, A, S, D</strong> (mantén <strong>Shift</strong> para avanzar más rápido) y mira alrededor con el cursor.<br>
-          Acércate a los sellos dorados y presiona <strong>E</strong> o usa la barra inferior para ir directo a cada sala.
+          Camina con <strong>W, A, S, D</strong> (mant&eacute;n <strong>Shift</strong> para avanzar m&aacute;s r&aacute;pido) y mira alrededor con el rat&oacute;n.<br>
+          Ac&eacute;rcate a cualquiera de los <strong>9 puntos</strong> y presiona <strong>E</strong> para escuchar su historia e inspeccionar su pieza.
         </p>
-        <span class="enter-badge">[ Hacer Clic para Iniciar Recorrido ]</span>
+        <span class="enter-badge">Hacer Clic para Entrar al Palacio</span>
       </div>
     </div>
 
-    <!-- Coordenadas en Tiempo Real -->
-    <div class="coord-debug" id="coord-debug">x: 0.00 · y: 0.00 · z: 0.00</div>
+    <div class="coord-debug" id="coord-debug">x: 0.00 - y: 0.00 - z: 0.00</div>
 
-    <!-- Aviso de Proximidad (Tecla E) -->
     <div class="interact-hud" id="interact-hud"></div>
 
-    <!-- Panel de Control de Iluminación de Época -->
+    <!-- PANEL DE ILUMINACION ANTIGUA / VINTAGE -->
     <div class="light-control-panel" id="light-control-panel">
       <div class="light-panel-header">
-        <span>Lámparas del Palacio</span>
-        <button id="toggle-light-panel" aria-label="Minimizar panel">−</button>
+        <span>Iluminaci&oacute;n Antigua</span>
+        <button id="toggle-light-panel" aria-label="Minimizar panel">-</button>
       </div>
       <div id="light-panel-content" class="light-panel-content">
+        <div class="vintage-light-presets">
+          <button type="button" class="preset-btn active" data-light-preset="candle">Luz de Vela</button>
+          <button type="button" class="preset-btn" data-light-preset="chandelier">Candelabro</button>
+          <button type="button" class="preset-btn" data-light-preset="museum">Museo</button>
+        </div>
         <label>
-          <span>Candelabros Internos: <strong id="val-point">12</strong></span>
-          <input type="range" id="range-point" min="0" max="35" step="0.5" value="12">
+          <span>Candelabros &Aacute;mbar: <strong id="val-point">15</strong></span>
+          <input type="range" id="range-point" min="0" max="38" step="0.5" value="15">
         </label>
         <label>
-          <span>Claridad Ambiental: <strong id="val-ambient">1.2</strong></span>
-          <input type="range" id="range-ambient" min="0" max="3" step="0.05" value="1.2">
+          <span>Luz de &Eacute;poca Sepia: <strong id="val-ambient">0.95</strong></span>
+          <input type="range" id="range-ambient" min="0" max="3" step="0.05" value="0.95">
         </label>
       </div>
     </div>
 
-    <!-- Barra Inferior de Teletransporte por los 9 Ambientes (Salas I - IX) -->
+    <!-- BARRA INFERIOR CON LOS 9 PUNTOS EXACTOS (1 AL 9) -->
     <div class="interior-compass-dock" id="interior-dock">
-      <span class="dock-caption">Ir a Sala:</span>
-      <button type="button" class="room-jump-btn" data-spot-index="0" title="Vestíbulo Principal">I. Ingreso</button>
-      <button type="button" class="room-jump-btn" data-spot-index="1" title="Oficinas de Miraflores">II. Despacho</button>
-      <button type="button" class="room-jump-btn" data-spot-index="2" title="Salón de Fiestas Rojo Guindo">III. Salón Fiestas</button>
-      <button type="button" class="room-jump-btn" data-spot-index="3" title="Comedor y Cristales de Venecia">IV. Comedor</button>
-      <button type="button" class="room-jump-btn" data-spot-index="4" title="Archivo y Vista a Motores">V. Archivo</button>
-      <button type="button" class="room-jump-btn" data-spot-index="5" title="Dormitorio y Jardines de Bolonia">VI. Dormitorio</button>
-      <button type="button" class="room-jump-btn" data-spot-index="6" title="Galería de Distribución">VII. Galería</button>
-      <button type="button" class="room-jump-btn" data-spot-index="7" title="Capilla y Sala del Carruaje">VIII. Capilla</button>
-      <button type="button" class="room-jump-btn" data-spot-index="8" title="Farmacia y Servicios">IX. Farmacia</button>
+      <span class="dock-caption">Recorrido 3D:</span>
+      <button type="button" class="room-jump-btn" data-spot-index="0">1. Ingreso</button>
+      <button type="button" class="room-jump-btn" data-spot-index="1">2. Cuarto de cuadros</button>
+      <button type="button" class="room-jump-btn" data-spot-index="2">3. Sal&oacute;n doctorcitos</button>
+      <button type="button" class="room-jump-btn" data-spot-index="3">4. Piano</button>
+      <button type="button" class="room-jump-btn" data-spot-index="4">5. El T&iacute;o</button>
+      <button type="button" class="room-jump-btn" data-spot-index="5">6. Carruaje</button>
+      <button type="button" class="room-jump-btn" data-spot-index="6">7. Sal&oacute;n de baile</button>
+      <button type="button" class="room-jump-btn" data-spot-index="7">8. Reserva silla</button>
+      <button type="button" class="room-jump-btn" data-spot-index="8">9. Videos antiguo</button>
     </div>
 
-    <!-- Controles Táctiles para Smartphones / Tablets -->
+    <!-- Controles Tactiles -->
     <div class="touch-controls">
       <div class="dpad">
-        <button id="btn-forward" class="btn-touch" aria-label="Avanzar">▲</button>
+        <button id="btn-forward" class="btn-touch" aria-label="Avanzar">Arriba</button>
         <div class="row">
-          <button id="btn-left" class="btn-touch" aria-label="Izquierda">◄</button>
-          <button id="btn-back" class="btn-touch" aria-label="Retroceder">▼</button>
-          <button id="btn-right" class="btn-touch" aria-label="Derecha">►</button>
+          <button id="btn-left" class="btn-touch" aria-label="Izquierda">Izq</button>
+          <button id="btn-back" class="btn-touch" aria-label="Retroceder">Abajo</button>
+          <button id="btn-right" class="btn-touch" aria-label="Derecha">Der</button>
         </div>
       </div>
     </div>
 
   </div>
 
-  <!-- PANEL LATERAL DE BRONCE Y PERGAMINO (DETALLE DE AMBIENTE) -->
+  <!-- ============================================================
+       PANEL LATERAL CON UN UNICO CUADRO (MODELO GLB O IMAGEN) + NARRADOR IA
+       ============================================================ -->
   <aside class="detail-panel" id="detail-panel">
     <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
     <svg class="corner-filigree cf-bl"><use href="#filigree-corner"/></svg>
-    <button class="close-btn" aria-label="Cerrar">✕</button>
-    <span class="tag">Cédula Patrimonial · Interior del Palacio</span>
-    <h3 id="panel-title">Título del Ambiente</h3>
-    <img id="panel-img" src="" alt="Fotografía histórica del ambiente" hidden />
-    <p id="panel-desc">Descripción histórica del ambiente.</p>
+    <button class="close-btn" aria-label="Cerrar">Cerrar (E)</button>
+    <span class="tag" id="panel-tag">Estaci&oacute;n 1 de 9 - Recorrido 3D</span>
+    <h3 id="panel-title">1. Ingreso para entrar</h3>
+
+    <!-- Unico Cuadro Visual (Alterna automaticamente entre 3D y salon de baile.png) -->
+    <div class="card-glb-box" id="panel-glb-box">
+      <span class="card-glb-hint" id="panel-media-hint">Arrastra para girar - Rueda para acercar</span>
+
+      <model-viewer
+        id="panel-glb-viewer"
+        src="./models/casa.glb"
+        alt="Modelo 3D interactivo de la estaci&oacute;n"
+        auto-rotate
+        camera-controls
+        environment-image="neutral"
+        exposure="1.15"
+        shadow-intensity="2"
+        tone-mapping="aces"
+        camera-orbit="30deg 72deg 105%"
+        min-camera-orbit="auto auto 30%"
+        max-camera-orbit="auto auto 220%"
+        interpolation-decay="100">
+      </model-viewer>
+
+      <img id="panel-spot-image" src="" alt="Vista del Sal&oacute;n de Baile" />
+
+      <div class="card-glb-controls">
+        <button type="button" class="card-glb-btn" id="glb-btn-reset">Vista General</button>
+        <button type="button" class="card-glb-btn" id="glb-btn-macro">Acercar Detalle</button>
+        <button type="button" class="card-glb-btn" id="glb-btn-spin">Pausar / Girar</button>
+        <button type="button" class="card-glb-btn" id="glb-btn-narrator">Narrador IA: Hablando (Pausar)</button>
+      </div>
+    </div>
+
+    <p id="panel-desc">Descripci&oacute;n hist&oacute;rica del ambiente.</p>
+
+    <div class="panel-nav-footer">
+      <button type="button" class="btn-vintage-sm" id="panel-prev-spot">Anterior Sala</button>
+      <button type="button" class="btn-vintage-sm" id="panel-next-spot">Siguiente Sala</button>
+    </div>
   </aside>
 
   <script type="module" src="./js/interior-scene.js"></script>
