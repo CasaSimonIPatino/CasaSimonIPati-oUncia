@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
@@ -1214,7 +1214,7 @@
   </div>
 
   <!-- ============================================================
-       APARTADO ESPECIAL: PLANTA DIESEL DE UNCIA (planta_diesel.glb)
+       APARTADO ESPECIAL: PLANTA DIESEL DE UNCIA (Planta_diesel.glb)
        ============================================================ -->
   <section class="patrimonial-section" id="apartado-planta-diesel">
     <div class="section-ornament-header">
@@ -1230,12 +1230,12 @@
       <svg class="corner-filigree cf-bl"><use href="#filigree-corner"/></svg>
       <svg class="corner-filigree cf-br"><use href="#filigree-corner"/></svg>
 
-      <!-- Vitrina 3D Interactivo de planta_diesel.glb con movimientos por vistas -->
+      <!-- Vitrina 3D Interactivo de Planta_diesel.glb con movimientos por vistas -->
       <div class="diesel-stage">
-        <span class="diesel-badge">Modelo 3D - planta_diesel.glb (Casa Diesel, Alemania)</span>
+        <span class="diesel-badge">Modelo 3D - Planta_diesel.glb (Casa Diesel, Alemania)</span>
         <model-viewer
           id="mv-planta-diesel"
-          src="./models/planta_diesel.glb"
+          src="./models/Planta_diesel.glb"
           alt="Modelo 3D de la Planta Diesel de 1901 en Uncia"
           auto-rotate
           camera-controls
@@ -1271,7 +1271,7 @@
         <div class="diesel-ledger">
           <div><strong>Instalaci&oacute;n</strong>A&ntilde;o 1901</div>
           <div><strong>Manufactura</strong>Alemania</div>
-          <div><strong>Modelo 3D</strong>planta_diesel.glb</div>
+          <div><strong>Modelo 3D</strong>Planta_diesel.glb</div>
         </div>
 
         <div style="display:flex; gap:10px; flex-wrap:wrap;">
@@ -1497,7 +1497,7 @@
     import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 
     const HOUSE_GLB_URL  = new URL('./models/casa-exterior.glb', import.meta.url).href;
-    const DIESEL_GLB_URL = new URL('./models/planta_diesel.glb', import.meta.url).href;
+    const DIESEL_GLB_URL = new URL('./models/Planta_diesel.glb', import.meta.url).href;
     const HOUSE_TARGET_SIZE = 14;
     const DIESEL_TARGET_SIZE = 11;
 
@@ -1580,7 +1580,7 @@
       }
     ];
 
-    // 3. LAS 4 VISTAS DINAMICAS DEL ESCENARIO PLANTA DIESEL (planta_diesel.glb)
+    // 3. LAS 4 VISTAS DINAMICAS DEL ESCENARIO PLANTA DIESEL (Planta_diesel.glb)
     let DIESEL_STOPS = [
       {
         id: 'diesel-1',
@@ -1646,7 +1646,7 @@
 
     // 4. CATALOGO DE MODELOS .GLB COLOCABLES EN EL MAPA
     let EXTERIOR_PROPS = [
-      { id: 'planta_diesel',     name: 'Planta Di\u00e9sel 1901 (planta_diesel.glb)', file: 'planta_diesel.glb',     enabled: false, position: { x: -6.2, y: 0, z: 3.0 }, rotationDeg: 0,   scale: 3.8 },
+      { id: 'planta_diesel',     name: 'Planta Di\u00e9sel 1901 (Planta_diesel.glb)', file: 'Planta_diesel.glb',     enabled: false, position: { x: -6.2, y: 0, z: 3.0 }, rotationDeg: 0,   scale: 3.8 },
       { id: 'planta_miraflores', name: 'Planta Miraflores (planta_miraflores.glb)', file: 'planta_miraflores.glb', enabled: false, position: { x: -6.5, y: 0, z: 2.5 }, rotationDeg: 0,   scale: 3.0 },
       { id: 'carruaje',          name: 'Carruaje Ingl\u00e9s (1870)',                 file: 'carruaje.glb',          enabled: false, position: { x: 5.2,  y: 0, z: 3.2 }, rotationDeg: -45, scale: 2.4 },
       { id: 'el_tio',            name: 'El T\u00edo de la Mina',                      file: 'el_tio.glb',            enabled: false, position: { x: 2.0,  y: 0, z: 4.0 }, rotationDeg: 0,   scale: 1.5 },
@@ -1987,7 +1987,7 @@
             normalizeAndCenterModel(dieselScenarioGroup, DIESEL_TARGET_SIZE);
             scene.add(dieselScenarioGroup);
           } catch (err) {
-            console.warn('No se encontr\u00f3 models/planta_diesel.glb:', err);
+            console.warn('No se encontr\u00f3 models/Planta_diesel.glb:', err);
           }
         }
         if (dieselScenarioGroup) dieselScenarioGroup.visible = true;
